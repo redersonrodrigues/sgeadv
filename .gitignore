@@ -1,0 +1,63 @@
+# ==========================================
+# 1. Configurações de Ambiente e Credenciais
+# ==========================================
+# Nunca envie senhas, chaves de API ou dados locais do Docker para o Git
+.env
+.env.local
+.env.*.local
+
+# ==========================================
+# 2. Docker e Dados de Bancos de Dados
+# ==========================================
+# Se você mapear o volume do MySQL em uma pasta local do projeto (ex: ./data ou ./mysql_data)
+/mysql_data/
+/data/
+/db_data/
+.docker/data/
+
+# Arquivos de log gerados pelo Docker/Nginx/Apache/PHP
+*.log
+/logs/
+
+# ==========================================
+# 3. Documentos e Uploads da Aplicação
+# ==========================================
+# Impede que os documentos confidenciais dos clientes do escritório subam para o repositório
+/uploads/
+/documentos/
+/storage/uploads/
+/storage/documents/
+
+# ==========================================
+# 4. Gerenciadores de Dependências (Back e Front)
+# ==========================================
+# Dependências do PHP (Composer)
+/vendor/
+composer.lock
+
+# Dependências do JavaScript (Node/NPM)
+/node_modules/
+package-lock.json
+yarn.lock
+
+# ==========================================
+# 5. IDEs e Ferramentas de Desenvolvimento
+# ==========================================
+# PHPStorm
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+.history/
+
+# Arquivos temporários do Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# 6. PHP / Cache / Sessões locais (fora do Docker)
+# ==========================================
+.phpunit.result.cache
+/tmp/
+/cache/
