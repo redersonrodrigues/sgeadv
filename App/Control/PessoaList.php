@@ -26,11 +26,7 @@ use Advogado\Widgets\Dialog\Message;
     {
         parent::__construct();
 
-        // A lista de usuarios somente faz sentido com sessao ativa.
-        if (!Session::getValue('logged')) {
-            echo "<script language='JavaScript'> window.location = 'index.php'; </script>";
-            return;
-        }
+        Auth::requirePermission('usuario.gerenciar');
 
         
         // instancia um formulário de buscas

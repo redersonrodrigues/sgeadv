@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
     use Advogado\Database\Criteria;
     use Advogado\Database\Record;
@@ -169,50 +169,60 @@
 
         public static function findByLogin($login)
         {
-            // Limpa CPF se necessário
-            $login = preg_replace('/\D/', '', $login);
+            $login = trim((string) $login);
+            if ($login === '') {
+                return null;
+            }
 
-            // Define o Critério de busca (Email OU CPF)
-            $criteria = new Criteria;
-            $criteria->add('email', '=', $login);
-            $criteria->add('cpf', '=', $login, 'or');
+            $criteria = new Criteria();
+            if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+                $criteria->add('email', '=', $login);
+            } else {
+                $cpf = preg_replace('/\D/', '', $login);
+                $criteria->add('cpf', '=', $cpf);
+                $criteria->add('email', '=', $login, 'or');
+            }
 
             $repository = new Repository('Pessoa');
             $users = $repository->load($criteria);
-            if (count($users) >0)
-            {
+            if ($users && count($users) > 0) {
                 return $users[0];
             }
+
+            return null;
         }
 
         public function validatePassword($senha)
         {
+            $senha = (string) $senha;
+            if (empty($this->senha)) {
+                return false;
+            }
+
+            if (password_verify($senha, $this->senha)) {
+                return true;
+            }
+
             $passwordHash = hash('sha256', $senha);
-            // compara senha adquirida do banco de dados com a senha do form convertida
-            return ($this->senha === $passwordHash);
+            return hash_equals((string) $this->senha, $passwordHash);
         }
 
         public function getPermissoes()
         {
-            // 1. Cria o critério para filtrar pelo ID da pessoa atual
-           $criteria = new Criteria();
-           $criteria->add('pessoa_id', '=', $this->id);
+            $permissoes = array();
+            $grupos = $this->getGrupos();
 
-            // 2. Obtém a conexão ativa da transação
-            $conn = Transaction::get();
+            if (!$grupos) {
+                return $permissoes;
+            }
 
-            // 3. Monta a query com os Joins
-            $sql = "SELECT p.nome FROM permissao p 
-            INNER JOIN grupo_permissao gp ON gp.permissao_id = p.id
-            INNER JOIN pessoa_grupo pg ON pg.grupo_id = gp.grupo_id
-            WHERE pg.pessoa_id = :id";
+            foreach ($grupos as $grupo) {
+                if (isset($grupo->nome)) {
+                    $permissoes = array_merge($permissoes, Auth::permissoesDoGrupo($grupo->nome));
+                }
+            }
 
-            $stmt = $conn->prepare($sql);
-            $stmt->bindValue(':id', $this->id, PDO::PARAM_INT);
-            $stmt->execute();
-
-            // Retorna apenas a coluna 'nome' em um array simples
-            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+            return array_values(array_unique($permissoes));
         }
 
         public function getFotoDataUri()
@@ -356,3 +366,4 @@
             return $destino;
         }
     }
+

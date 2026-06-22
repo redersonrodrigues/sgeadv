@@ -3,52 +3,47 @@ namespace Advogado\Core;
 
 class MenuBuilder
 {
-    /**
-     * Monta a barra lateral da area autenticada.
-     * O parametro $currentClass define qual item fica ativo.
-     */
     public function buildSidebar($currentClass)
     {
         $currentClass = (string) $currentClass;
+        $items = array();
 
-        return '
-            <li class="'.($currentClass === 'HomePage' ? 'active' : '').'">
-                <a href="index.php">
-                    <i class="fa fa-home"></i>
-                    <p>Início</p>
-                </a>
-            </li>
-            <li class="'.($currentClass === 'PerfilPage' ? 'active' : '').'">
-                <a href="index.php?class=PerfilPage">
-                    <i class="fa fa-user"></i>
-                    <p>Perfil</p>
-                </a>
-            </li>
-            <li class="'.(($currentClass === 'PessoaList' || $currentClass === 'PessoaForm') ? 'active' : '').'">
-                <a href="index.php?class=PessoaList">
-                    <i class="fa fa-users"></i>
-                    <p>Usuários</p>
-                </a>
-            </li>
-            <li class="'.($currentClass === 'CidadesFormList' ? 'active' : '').'">
-                <a href="index.php?class=CidadesFormList">
-                    <i class="fa fa-map-marker"></i>
-                    <p>Cidades</p>
-                </a>
-            </li>
-            <li class="'.($currentClass === 'EspecialidadesFormList' ? 'active' : '').'">
-                <a href="index.php?class=EspecialidadesFormList">
-                    <i class="fa fa-gavel"></i>
-                    <p>Especialidades</p>
-                </a>
-            </li> 
-            <li class="'.($currentClass === 'AlterarSenhaForm' ? 'active' : '').'">
-                <a href="index.php?class=AlterarSenhaForm">
-                    <i class="fa fa-key"></i>
-                    <p>Alterar Senha</p>
-                </a>
-            </li>
-            <li class="divider"></li>
+        $items[] = $this->renderItem('HomePage', $currentClass, 'index.php', 'fa fa-home', 'Inicio');
+        $items[] = $this->renderItem('PerfilPage', $currentClass, 'index.php?class=PerfilPage', 'fa fa-user', 'Perfil');
+
+        if (class_exists('\Auth') && \Auth::temPermissao('usuario.gerenciar')) {
+            $items[] = $this->renderItem(
+                array('PessoaList', 'PessoaForm'),
+                $currentClass,
+                'index.php?class=PessoaList',
+                'fa fa-users',
+                'Usuarios'
+            );
+        }
+
+        if (class_exists('\Auth') && \Auth::temPermissao('cidades.visualizar')) {
+            $items[] = $this->renderItem(
+                'CidadesFormList',
+                $currentClass,
+                'index.php?class=CidadesFormList',
+                'fa fa-map-marker',
+                'Cidades'
+            );
+        }
+
+        if (class_exists('\Auth') && \Auth::temPermissao('especialidade.visualizar')) {
+            $items[] = $this->renderItem(
+                'EspecialidadesFormList',
+                $currentClass,
+                'index.php?class=EspecialidadesFormList',
+                'fa fa-gavel',
+                'Especialidades'
+            );
+        }
+
+        $items[] = $this->renderItem('AlterarSenhaForm', $currentClass, 'index.php?class=AlterarSenhaForm', 'fa fa-key', 'Alterar Senha');
+        $items[] = '<li class="divider"></li>';
+        $items[] = '
             <li>
                 <a href="index.php?class=LoginForm&method=onLogout">
                     <i class="fa fa-sign-out"></i>
@@ -56,11 +51,10 @@ class MenuBuilder
                 </a>
             </li>
         ';
+
+        return implode("\n", $items);
     }
 
-    /**
-     * Monta o menu superior com o dropdown Dados.
-     */
     public function buildTopbar()
     {
         return '
@@ -80,6 +74,21 @@ class MenuBuilder
                 <a href="index.php?class=LoginForm&method=onLogout">
                     <i class="fa fa-sign-out"></i>
                     <p>Sair</p>
+                </a>
+            </li>
+        ';
+    }
+
+    private function renderItem($matchClass, $currentClass, $href, $icon, $label)
+    {
+        $classes = is_array($matchClass) ? $matchClass : array($matchClass);
+        $active = in_array($currentClass, $classes, true) ? 'active' : '';
+
+        return '
+            <li class="' . $active . '">
+                <a href="' . $href . '">
+                    <i class="' . $icon . '"></i>
+                    <p>' . $label . '</p>
                 </a>
             </li>
         ';

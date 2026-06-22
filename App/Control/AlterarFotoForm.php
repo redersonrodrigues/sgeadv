@@ -23,10 +23,7 @@ class AlterarFotoForm extends Page
         parent::__construct();
 
         // A alteracao de foto e exclusiva do usuario autenticado.
-        if (!Session::getValue('logged')) {
-            echo "<script language='JavaScript'> window.location = 'index.php'; </script>";
-            return;
-        }
+        Auth::requireLogin();
 
         $this->box = new VBox();
         parent::add($this->box);

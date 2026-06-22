@@ -46,6 +46,8 @@ class CidadesFormList extends Page
     {
         parent::__construct();
 
+        Auth::requirePermission('cidades.visualizar');
+
         $this->connection   = 'advogado';
         $this->activeRecord = 'Cidade';
         

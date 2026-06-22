@@ -1,8 +1,6 @@
 <?php
 
 use Advogado\Control\Page;
-use Advogado\Database\Criteria;
-use Advogado\Database\Repository;
 use Advogado\Database\Transaction;
 use Advogado\Session\Session;
 
@@ -10,21 +8,18 @@ class PerfilPage extends Page
 {
     public function show()
     {
-        // O perfil so pode ser visto com usuario autenticado.
-        if (!Session::getValue('logged')) {
-            echo "<script language='JavaScript'> window.location = 'index.php'; </script>";
-            return;
-        }
+        Auth::requireLogin();
 
-        // Fallbacks para manter a tela funcional se a consulta falhar.
         $nome = '';
         $email = '';
         $telefone = '';
         $cpf = '';
         $cnpj = '';
+        $rg = '';
+        $sexo = '';
+        $dtNascimento = '';
         $oab = '';
         $oabUf = '';
-        $valorHora = '';
         $cargo = '';
         $salario = '';
         $contratadoEm = '';
@@ -34,47 +29,45 @@ class PerfilPage extends Page
         $cidade = '';
         $observacoes = '';
         $grupoNomes = array();
+        $especialidades = array();
         $foto = 'App/Templates/assets/img/default-avatar.png';
 
         try {
-            // O Repository depende de transacao ativa.
             Transaction::open('advogado');
 
-            // Busca apenas a pessoa logada.
-            $criteria = new Criteria();
-            $criteria->add('id', '=', (int) Session::getValue('usuario_id'));
+            $usuarioId = (int) Session::getValue('usuario_id');
+            $usuario = $usuarioId ? new Pessoa($usuarioId) : null;
 
-            $repository = new Repository('Pessoa');
-            $users = $repository->load($criteria);
-            $user = ($users && isset($users[0])) ? $users[0] : null;
+            if ($usuario) {
+                $nome = (string) ($usuario->nome ?? '');
+                $email = (string) ($usuario->email ?? '');
+                $telefone = (string) ($usuario->telefone ?? '');
+                $cpf = (string) ($usuario->cpf ?? '');
+                $cnpj = (string) ($usuario->cnpj ?? '');
+                $rg = (string) ($usuario->rg ?? '');
+                $sexo = (string) ($usuario->sexo ?? '');
+                $dtNascimento = (string) ($usuario->dt_nascimento ?? '');
+                $oab = (string) ($usuario->oab ?? '');
+                $oabUf = (string) ($usuario->oab_uf ?? '');
+                $cargo = (string) ($usuario->cargo ?? '');
+                $salario = (string) ($usuario->salario ?? '');
+                $contratadoEm = (string) ($usuario->contratado_em ?? '');
+                $demitidoEm = (string) ($usuario->demitido_em ?? '');
+                $endereco = (string) ($usuario->endereco ?? '');
+                $bairro = (string) ($usuario->bairro ?? '');
+                $cidade = (string) ($usuario->get_nome_cidade() ?? '');
+                $observacoes = (string) ($usuario->observacoes ?? '');
+                $foto = $usuario->getFotoDataUri();
 
-            if ($user) {
-                // Carrega os dados basicos diretamente do registro da pessoa.
-                $nome = (string) ($user->nome ?? '');
-                $email = (string) ($user->email ?? '');
-                $telefone = (string) ($user->telefone ?? '');
-                $cpf = (string) ($user->cpf ?? '');
-                $cnpj = (string) ($user->cnpj ?? '');
-                $oab = (string) ($user->oab ?? '');
-                $oabUf = (string) ($user->oab_uf ?? '');
-                $valorHora = (string) ($user->valor_hora ?? '');
-                $cargo = (string) ($user->cargo ?? '');
-                $salario = (string) ($user->salario ?? '');
-                $contratadoEm = (string) ($user->contratado_em ?? '');
-                $demitidoEm = (string) ($user->demitido_em ?? '');
-                $endereco = (string) ($user->endereco ?? '');
-                $bairro = (string) ($user->bairro ?? '');
-                $cidade = (string) ($user->get_nome_cidade() ?? '');
-                $observacoes = (string) ($user->observacoes ?? '');
-                $foto = $user->getFotoDataUri();
+                foreach ((array) $usuario->getGrupos() as $grupo) {
+                    if (isset($grupo->nome)) {
+                        $grupoNomes[] = $grupo->nome;
+                    }
+                }
 
-                // Usa os grupos reais do usuario para decidir quais blocos exibir.
-                $grupos = $user->getGrupos();
-                if ($grupos) {
-                    foreach ($grupos as $grupo) {
-                        if (isset($grupo->nome)) {
-                            $grupoNomes[] = $grupo->nome;
-                        }
+                foreach ((array) $usuario->getEspecialidades() as $especialidade) {
+                    if (isset($especialidade->nome)) {
+                        $especialidades[] = $especialidade->nome;
                     }
                 }
             }
@@ -84,18 +77,16 @@ class PerfilPage extends Page
             Transaction::rollback();
         }
 
-        // Normaliza os nomes dos grupos para o controle de exibicao.
-        $gruposNormalizados = array_map('strtolower', $grupoNomes);
-
-        // Escape dos campos antes da montagem do HTML.
         $nome = htmlspecialchars($nome, ENT_QUOTES, 'UTF-8');
         $email = htmlspecialchars($email, ENT_QUOTES, 'UTF-8');
         $telefone = htmlspecialchars($telefone, ENT_QUOTES, 'UTF-8');
         $cpf = htmlspecialchars($cpf, ENT_QUOTES, 'UTF-8');
         $cnpj = htmlspecialchars($cnpj, ENT_QUOTES, 'UTF-8');
+        $rg = htmlspecialchars($rg, ENT_QUOTES, 'UTF-8');
+        $sexo = htmlspecialchars($sexo, ENT_QUOTES, 'UTF-8');
+        $dtNascimento = htmlspecialchars($dtNascimento, ENT_QUOTES, 'UTF-8');
         $oab = htmlspecialchars($oab, ENT_QUOTES, 'UTF-8');
         $oabUf = htmlspecialchars($oabUf, ENT_QUOTES, 'UTF-8');
-        $valorHora = htmlspecialchars($valorHora, ENT_QUOTES, 'UTF-8');
         $cargo = htmlspecialchars($cargo, ENT_QUOTES, 'UTF-8');
         $salario = htmlspecialchars($salario, ENT_QUOTES, 'UTF-8');
         $contratadoEm = htmlspecialchars($contratadoEm, ENT_QUOTES, 'UTF-8');
@@ -106,17 +97,8 @@ class PerfilPage extends Page
         $observacoes = htmlspecialchars($observacoes, ENT_QUOTES, 'UTF-8');
         $foto = htmlspecialchars($foto, ENT_QUOTES, 'UTF-8');
 
-        // Indica o grupo principal da tela para orientar o usuario.
-        $grupoPrincipal = !empty($grupoNomes) ? implode(', ', $grupoNomes) : 'Usuario';
-        $grupoPrincipal = htmlspecialchars($grupoPrincipal, ENT_QUOTES, 'UTF-8');
-
-        // Define quais blocos adicionais entram conforme o grupo.
-        $eAdvogado = in_array('advogado', $gruposNormalizados, true);
-        $eCliente = in_array('cliente', $gruposNormalizados, true);
-        $eColaborador = in_array('administrador', $gruposNormalizados, true)
-            || in_array('secretaria', $gruposNormalizados, true)
-            || in_array('recepcionista', $gruposNormalizados, true)
-            || in_array('tesoureiro', $gruposNormalizados, true);
+        $grupoPrincipal = htmlspecialchars($grupoNomes ? implode(', ', $grupoNomes) : 'Usuario', ENT_QUOTES, 'UTF-8');
+        $especialidadesTexto = htmlspecialchars($especialidades ? implode(', ', $especialidades) : '-', ENT_QUOTES, 'UTF-8');
 
         echo '
             <div style="padding:24px 8px; max-width:1080px;">
@@ -129,70 +111,34 @@ class PerfilPage extends Page
                 </div>
 
                 <table class="table table-striped">
-                    <tr><th style="width:220px;">Nome</th><td>' . $nome . '</td></tr>
-                    <tr><th>E-mail</th><td>' . $email . '</td></tr>
-                    <tr><th>Telefone</th><td>' . $telefone . '</td></tr>
-                </table>
-        ';
-
-        if ($eAdvogado) {
-            // Bloco especifico para advogado.
-            echo '
-                <h4 style="margin-top:24px;">Dados do advogado</h4>
-                <table class="table table-striped">
-                    <tr><th style="width:220px;">CPF</th><td>' . ($cpf !== '' ? $cpf : '-') . '</td></tr>
-                    <tr><th>OAB</th><td>' . ($oab !== '' ? $oab . ($oabUf !== '' ? '/' . $oabUf : '') : '-') . '</td></tr>
-                    <tr><th>Valor hora</th><td>' . ($valorHora !== '' ? $valorHora : '-') . '</td></tr>
-                    <tr><th>Cidade</th><td>' . ($cidade !== '' ? $cidade : '-') . '</td></tr>
-                    <tr><th>Observações</th><td>' . ($observacoes !== '' ? $observacoes : '-') . '</td></tr>
-                </table>
-            ';
-        }
-
-        if ($eCliente) {
-            // Bloco especifico para cliente.
-            echo '
-                <h4 style="margin-top:24px;">Dados do cliente</h4>
-                <table class="table table-striped">
-                    <tr><th style="width:220px;">CPF</th><td>' . ($cpf !== '' ? $cpf : '-') . '</td></tr>
-                    <tr><th>CNPJ</th><td>' . ($cnpj !== '' ? $cnpj : '-') . '</td></tr>
+                    <tr><th style="width:220px;">Nome</th><td>' . ($nome !== '' ? $nome : '-') . '</td></tr>
+                    <tr><th>E-mail</th><td>' . ($email !== '' ? $email : '-') . '</td></tr>
+                    <tr><th>Telefone</th><td>' . ($telefone !== '' ? $telefone : '-') . '</td></tr>
                     <tr><th>Endereco</th><td>' . ($endereco !== '' ? $endereco : '-') . '</td></tr>
                     <tr><th>Bairro</th><td>' . ($bairro !== '' ? $bairro : '-') . '</td></tr>
                     <tr><th>Cidade</th><td>' . ($cidade !== '' ? $cidade : '-') . '</td></tr>
+                    <tr><th>Grupo(s)</th><td>' . $grupoPrincipal . '</td></tr>
                 </table>
-            ';
-        }
 
-        if ($eColaborador && !$eAdvogado && !$eCliente) {
-            // Bloco geral para colaborador, recepcionista, tesoureiro e perfis similares.
-            echo '
-                <h4 style="margin-top:24px;">Dados funcionais</h4>
+                <h4 style="margin-top:24px;">Dados pessoais</h4>
                 <table class="table table-striped">
-                    <tr><th style="width:220px;">Cargo</th><td>' . ($cargo !== '' ? $cargo : '-') . '</td></tr>
-                    <tr><th>Salário</th><td>' . ($salario !== '' ? $salario : '-') . '</td></tr>
+                    <tr><th style="width:220px;">CPF</th><td>' . ($cpf !== '' ? $cpf : '-') . '</td></tr>
+                    <tr><th>RG</th><td>' . ($rg !== '' ? $rg : '-') . '</td></tr>
+                    <tr><th>Sexo</th><td>' . ($sexo !== '' ? $sexo : '-') . '</td></tr>
+                    <tr><th>Data de nascimento</th><td>' . ($dtNascimento !== '' ? $dtNascimento : '-') . '</td></tr>
+                </table>
+
+                <h4 style="margin-top:24px;">Dados profissionais</h4>
+                <table class="table table-striped">
+                    <tr><th style="width:220px;">CNPJ</th><td>' . ($cnpj !== '' ? $cnpj : '-') . '</td></tr>
+                    <tr><th>OAB</th><td>' . ($oab !== '' ? $oab . ($oabUf !== '' ? '/' . $oabUf : '') : '-') . '</td></tr>
+                    <tr><th>Cargo</th><td>' . ($cargo !== '' ? $cargo : '-') . '</td></tr>
+                    <tr><th>Salario</th><td>' . ($salario !== '' ? $salario : '-') . '</td></tr>
                     <tr><th>Contratado em</th><td>' . ($contratadoEm !== '' ? $contratadoEm : '-') . '</td></tr>
                     <tr><th>Demitido em</th><td>' . ($demitidoEm !== '' ? $demitidoEm : '-') . '</td></tr>
-                    <tr><th>Cidade</th><td>' . ($cidade !== '' ? $cidade : '-') . '</td></tr>
+                    <tr><th>Especialidades</th><td>' . $especialidadesTexto . '</td></tr>
+                    <tr><th>Observacoes</th><td>' . ($observacoes !== '' ? $observacoes : '-') . '</td></tr>
                 </table>
-            ';
-        }
-
-        if (!$eAdvogado && !$eCliente && !$eColaborador) {
-            // Fallback para grupos ainda nao mapeados em regra especifica.
-            echo '
-                <h4 style="margin-top:24px;">Dados adicionais</h4>
-                <table class="table table-striped">
-                    <tr><th style="width:220px;">CPF</th><td>' . ($cpf !== '' ? $cpf : '-') . '</td></tr>
-                    <tr><th>CNPJ</th><td>' . ($cnpj !== '' ? $cnpj : '-') . '</td></tr>
-                    <tr><th>Endereco</th><td>' . ($endereco !== '' ? $endereco : '-') . '</td></tr>
-                    <tr><th>Bairro</th><td>' . ($bairro !== '' ? $bairro : '-') . '</td></tr>
-                    <tr><th>Cidade</th><td>' . ($cidade !== '' ? $cidade : '-') . '</td></tr>
-                    <tr><th>Observações</th><td>' . ($observacoes !== '' ? $observacoes : '-') . '</td></tr>
-                </table>
-            ';
-        }
-
-        echo '
             </div>
         ';
     }

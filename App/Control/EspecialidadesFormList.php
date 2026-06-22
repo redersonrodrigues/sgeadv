@@ -46,6 +46,8 @@ class EspecialidadesFormList extends Page
     {
         parent::__construct();
 
+        Auth::requirePermission('especialidade.visualizar');
+
         $this->connection   = 'advogado';
         $this->activeRecord = 'Especialidade';
         

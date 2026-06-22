@@ -18,10 +18,7 @@ class AlterarSenhaForm extends Page
         parent::__construct();
 
         // A tela somente faz sentido para usuario autenticado.
-        if (!Session::getValue('logged')) {
-            echo "<script language='JavaScript'> window.location = 'index.php'; </script>";
-            return;
-        }
+        Auth::requireLogin();
 
         // O formulario segue a mesma estrutura visual usada no LoginForm.
         $this->form = new FormWrapper(new Form('form_alterar_senha'));
@@ -75,7 +72,7 @@ class AlterarSenhaForm extends Page
 
             if ($user && $user->validatePassword($senhaAtual)) {
                 // Atualiza o hash e persiste o cadastro do usuario logado.
-                $user->senha = hash('sha256', $novaSenha);
+                $user->senha = password_hash($novaSenha, PASSWORD_DEFAULT);
                 $user->store();
                 Transaction::close();
 

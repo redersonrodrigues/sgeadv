@@ -38,10 +38,7 @@ class PessoaForm extends Page
     {
         parent::__construct();
 
-        if (!Session::getValue('logged')) {
-            echo "<script language='JavaScript'> window.location = 'index.php'; </script>";
-            return;
-        }
+        Auth::requirePermission('usuario.gerenciar');
 
         $this->form = new FormWrapper(new Form('form_pessoas'));
         $this->form->setTitle('Cadastro de Usuario');
@@ -264,7 +261,7 @@ class PessoaForm extends Page
             }
 
             if ($senha !== '') {
-                $pessoa->senha = hash('sha256', $senha);
+                $pessoa->senha = password_hash($senha, PASSWORD_DEFAULT);
             } elseif (!empty($dados->id)) {
                 $existente = Pessoa::find($dados->id);
                 if ($existente) {

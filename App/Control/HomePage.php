@@ -9,10 +9,7 @@ class HomePage extends Page
     public function show()
     {
         // Esta tela e exclusiva de usuario autenticado.
-        if (!Session::getValue('logged')) {
-            echo "<script language='JavaScript'> window.location = 'index.php'; </script>";
-            return;
-        }
+        Auth::requireLogin();
 
         // Valores de fallback vindos da sessao para evitar tela incompleta.
         $nome = (string) (Session::getValue('nome_usuario') ?? '');
