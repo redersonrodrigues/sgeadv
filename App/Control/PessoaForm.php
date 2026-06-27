@@ -69,7 +69,7 @@ class PessoaForm extends Page
         $demitidoEm = new Date('demitido_em');
         $observacoes = new Text('observacoes');
         $grupo = new CheckGroup('ids_grupos');
-        $especialidade = new CheckGroup('ids_especialidades');
+        $especialidade = new CheckGroup('id_especialidades');
 
         Transaction::open('advogado');
         $cidades = Cidade::all();

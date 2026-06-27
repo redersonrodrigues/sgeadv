@@ -22,7 +22,7 @@ class RecuperarSenha
     public static function createToken($email)
     {
         $conn = Connection::open('advogado');
-        $stmt = $conn->prepare('SELECT id, nome, usuario FROM usuarios WHERE usuario = :email LIMIT 1');
+        $stmt = $conn->prepare('SELECT id, nome, email FROM pessoa WHERE email = :email LIMIT 1');
         $stmt->bindValue(':email', $email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -73,8 +73,8 @@ class RecuperarSenha
     public static function updatePassword($user_id, $new_password)
     {
         $conn = Connection::open('advogado');
-        $stmt = $conn->prepare('UPDATE usuarios SET senha = :senha WHERE id = :id');
-        $stmt->bindValue(':senha', md5($new_password));
+        $stmt = $conn->prepare('UPDATE pessoa SET senha = :senha WHERE id = :id');
+        $stmt->bindValue(':senha', password_hash($new_password, PASSWORD_DEFAULT));
         $stmt->bindValue(':id', $user_id);
         $stmt->execute();
     }

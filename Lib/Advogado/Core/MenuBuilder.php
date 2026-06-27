@@ -16,8 +16,18 @@ class MenuBuilder
                 array('PessoaList', 'PessoaForm'),
                 $currentClass,
                 'index.php?class=PessoaList',
-                'fa fa-users',
+                'fa fa-user-circle-o',
                 'Usuarios'
+            );
+        }
+
+        if (class_exists('\Auth') && \Auth::temPermissao('grupo.gerenciar')) {
+            $items[] = $this->renderItem(
+                    'GrupoFormList',
+                $currentClass,
+                'index.php?class=GrupoFormList',
+                'fa fa-group',
+                'Grupos'
             );
         }
 

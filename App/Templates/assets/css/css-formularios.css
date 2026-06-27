@@ -1,0 +1,37 @@
+/* ==========================================================================
+   CORREÇÃO CIRÚRGICA PARA SEPARAR LABELS E INPUTS EM TABELAS DINÂMICAS
+   ========================================================================== */
+
+/* 1. Força a tabela a se separar verticalmente (espaço entre Usuário e Senha) */
+.form-conteudo table {
+    border-collapse: separate !important;
+    border-spacing: 0 15px !important; /* O segundo número (15px) cria o espaço vertical */
+    width: 100% !important;
+}
+
+/* 2. ESPAÇAMENTO HORIZONTAL: Afasta o texto da label para a esquerda da caixa */
+.form-conteudo table td:first-child,
+.form-conteudo label {
+    padding-right: 20px !important; /* Cria um espaço limpo de 20px antes de começar a caixa branca */
+    text-align: left !important;
+    font-weight: bold !important;
+    color: #4a5568 !important;
+    white-space: nowrap !important; /* Garante que as palavras não quebrem de linha */
+}
+
+/* 3. Ajusta a largura e garante o comportamento correto da caixa de texto */
+.form-conteudo table td input[type="text"],
+.form-conteudo table td input[type="password"],
+.form-control {
+    width: 100% !important;
+    height: 38px !important;
+    box-sizing: border-box !important;
+}
+
+/* 4. Afasta o botão verde "Entrar" da caixa de senha acima */
+.form-conteudo button,
+.form-conteudo input[type="submit"],
+.form-conteudo .btn-success {
+    margin-top: 15px !important;
+    display: inline-block !important;
+}

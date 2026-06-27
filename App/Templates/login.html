@@ -12,26 +12,27 @@
         <link href="App/Templates/assets/css/light-bootstrap-dashboard.css?v=1.4.0" rel="stylesheet"/>
         <link href="App/Templates/assets/css/font-awesome.min.css" rel="stylesheet">
         <link href="App/Templates/assets/css/css-login.css" rel="stylesheet" >
+        <link href="App/Templates/assets/css/css-formularios.css" rel="stylesheet">
         <script src="App/Templates/assets/js/Chart.bundle.min.js"></script>
     </head>
         <body>
-        <h1 class="class1">TEste</h1>
     <section>
         <div class="container">
             <div class="row">
                 <div class="col-md-4 login-sec p-5">
                     <h2 class="text-center">Faça seu login</h2>
-                    {content}
+                    <div class="title-underline"></div>
+
+                    <div class="form-conteudo">
+                        {content}
+                    </div>
+
+                    <div class="recover-wrap">
+                        <a class="recover-btn" href="index.php?class=RecuperarSenhaControl" role="link">Recuperar Senha</a>
+                    </div>
                 </div>
                 <div class="col-md-8 banner-sec"></div>
             </div>
-            <p><a class="btn btn-primary btn-lg"
-                  href="index.php?class=RecuperarSenhaControl"
-                  role="link"
-                  >
-                    Recuperar Senha
-                </a>
-            </p>
         </div>
     </section>
 
@@ -49,5 +50,5 @@
     <script src="App/Templates/assets/js/jquery.3.2.1.min.js" type="text/javascript"></script>
     <script src="App/Templates/assets/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="App/Templates/assets/js/light-bootstrap-dashboard.js?v=1.4.0"></script>
-    
+
 </html>

@@ -9,8 +9,8 @@
     use Advogado\Widgets\Form\Password;
     use Advogado\Widgets\Wrapper\FormWrapper;
 
-    require_once 'App/Model/RecuperarSenha.php';
-require_once 'App/Services/MailService.php';
+    require_once __DIR__ . '/../Model/RecuperarSenha.php';
+    require_once __DIR__ . '/../Services/MailService.php';
 
 class RecuperarSenhaControl extends Page
 {
@@ -79,9 +79,9 @@ class RecuperarSenhaControl extends Page
 
             // Monta link de recuperação
             $token = $res['token'];
-            $host = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'];
-            $path = dirname($_SERVER['PHP_SELF']);
-            $link = $host . $path . '/index.php?class=RecuperarSenhaControl&method=reset&token=' . $token;
+            $host = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . ($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME']);
+            $path = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
+            $link = $host . $path . '/index.php?class=RecuperarSenhaControl&method=reset&token=' . urlencode($token);
 
             $body = "<p>Olá {$res['nome']},</p>".
                     "<p>Recebemos uma solicitação para redefinir sua senha. Clique no link abaixo para criar uma nova senha (válido por 1 hora):</p>".
@@ -112,7 +112,9 @@ class RecuperarSenhaControl extends Page
         $this->resetForm->addField('Confirmação', $senha2, 200);
 
         $action = new Action(array($this, 'onReset'));
-        $action->setParameter('token', $token);
+        if ($token) {
+            $action->setParameter('token', $token);
+        }
         $this->resetForm->addAction('Salvar', $action);
 
         $this->box->add($this->resetForm);

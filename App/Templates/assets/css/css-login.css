@@ -1,106 +1,282 @@
 @import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
-h1.class1 {
-    color: red;
-}
-.login-block{
-    background: #071220;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to bottom, #375e8e, #071220);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to bottom, #375e8e, #071220); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    float:left;
-    width:100%;
-    padding : 50px 0;
-}
-.banner-sec{
-    background:url(../img/banners/login-principal.jpg)  no-repeat left bottom;
-    background-size:cover;
-    height:450px;
-    min-height:500px;
-    border-radius: 0 10px 10px 0;
-    padding:0;
-}
-.container{
-    background:#fff;
-    border-radius: 10px;
-    box-shadow:15px 20px 0px rgba(0,0,0,0.1);
-}
-.carousel-inner{
-    border-radius:0 10px 10px 0;
-}
-.carousel-caption{
-    text-align:left; left:5%;
-}
-.login-sec{
-    padding: 50px 30px;
-    position:relative;
-}
-.login-sec .copy-text{
-    position:absolute;
-    width:80%;
-    bottom:20px;
-    font-size:13px;
-    text-align:center;
-}
-.login-sec .copy-text i{
-    color:#213d60;
-}
-.login-sec .copy-text a{
-    color:#8cb2ff;
-}
-.login-sec h2{
-    margin-bottom:30px;
-    font-weight:400;
-    font-size:30px;
-    color: #213d60;
-}
-.login-sec h2:after{
-    content:" ";
-    width:100px;
-    height:3px;
-    background:#213d60;
-    display:block;
-    margin-top:20px;
-    border-radius:3px;
-    margin-left:auto;
-    margin-right:auto
-}
-.btn-login{
-    background: #213d60;
-    color:#fff;
-    font-weight:600;
-}
-.banner-text{
-    width:70%;
-    position:absolute;
-    bottom:40px;
-    padding-left:20px;
-}
-.banner-text h2{
-    color:#fff;
-    font-weight:600;
-}
-.banner-text h2:after{
-    content:" ";
-    width:100px;
-    height:5px;
-    background:#FFF;
-    display:block;
-    margin-top:20px;
-    border-radius:3px;
-}
-.banner-text p{
-    color:#fff;
-}
-.mensagem-sucesso{
-    font-size:16px;
-    color:#4c7438;
-    text-align:center;
-}
-.mensagem-erro{
-    font-size:16px;
-    color:#a94659;
-    text-align:center;
-}
-.tabelas{
-    font-size:14px;
+
+/* ==========================================================================
+   1. RESET, FUNDO EM DEGRADÊ E CENTRALIZAÇÃO ABSOLUTA
+   ========================================================================== */
+html, body {
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
 }
 
+body {
+    /* Gradiente linear idêntico ao azul escuro de transição da foto de referência */
+    background: linear-gradient(to bottom, #244265 0%, #0c1825 100%) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    font-family: "Segoe UI", -apple-system, sans-serif !important;
+    padding-bottom: 60px !important; /* Reserva o espaço para o rodapé sem sobrepor o card */
+}
+
+/* Força a tag section a suspender o card perfeitamente no meio do navegador */
+section {
+    flex: 1;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 30px 15px !important;
+    width: 100% !important;
+    min-height: calc(100vh - 60px) !important;
+    background: transparent !important; /* Remove cinza de templates antigos */
+}
+
+/* ==========================================================================
+   2. REESTRUTURAÇÃO DO CARD BRANCO E DO SISTEMA DE GRID
+   ========================================================================== */
+section .container {
+    background: #ffffff !important;
+    border-radius: 6px !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+    max-width: 960px !important;
+    width: 100% !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+}
+
+/* Corrige o comportamento da row para trabalhar em conjunto com as colunas */
+section .row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    margin: 0 !important;
+    align-items: stretch !important; /* Força as duas colunas a terem o mesmo tamanho vertical */
+}
+
+/* Força a divisão correta de espaço para o formulário (Lado Esquerdo) */
+.login-sec {
+    width: 40% !important;
+    flex: 0 0 40% !important;
+    max-width: 40% !important;
+    padding: 50px 40px !important;
+    background: #ffffff !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    position: relative;
+}
+
+/* Força a exibição e o dimensionamento correto do Banner (Lado Direito) */
+.banner-sec {
+    width: 60% !important;
+    flex: 0 0 60% !important;
+    max-width: 60% !important;
+    background-image: url('../img/banners/login-principal.jpg') !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    min-height: 480px !important;
+    display: block !important;
+    float: none !important;
+}
+
+/* ==========================================================================
+   3. TÍTULO, SUBTEXTOS E DESIGN DO CABEÇALHO
+   ========================================================================== */
+.login-sec h2 {
+    margin-top: 0 !important;
+    margin-bottom: 5px !important;
+    font-weight: 400 !important;
+    font-size: 30px !important;
+    color: #1a365d !important;
+    text-align: center !important;
+}
+
+/* Linha decorativa abaixo do título */
+.login-sec h2:after {
+    content: " " !important;
+    width: 75px !important;
+    height: 3px !important;
+    background: #1a365d !important;
+    display: block !important;
+    margin: 12px auto 0 auto !important;
+    border-radius: 2px !important;
+}
+
+/* ==========================================================================
+   4. FORMATAÇÃO DOS ELEMENTOS DO FORMULÁRIO ({content})
+   ========================================================================== */
+.form-wrapper {
+    padding: 20px 0 10px 0 !important;
+    width: 100% !important;
+}
+
+/* Rótulos dos campos injetados (USUÁRIO e SENHA) */
+.form-wrapper label {
+    display: block !important;
+    color: #4a5568 !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    margin-bottom: 8px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Caixas de input padrões e derivadas do Bootstrap (.form-control) */
+.form-wrapper .form-control,
+.form-wrapper input[type="text"],
+.form-wrapper input[type="email"],
+.form-wrapper input[type="password"] {
+    width: 100% !important;
+    height: 42px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 10px 12px !important;
+    border-radius: 4px !important;
+    background: #ffffff !important;
+    color: #334155 !important;
+    font-size: 14px !important;
+    margin-bottom: 20px !important;
+    box-shadow: none !important;
+    display: block !important;
+    box-sizing: border-box !important;
+}
+
+.form-wrapper .form-control:focus,
+.form-wrapper input:focus {
+    border-color: #1a365d !important;
+    box-shadow: 0 0 0 1px #1a365d !important;
+}
+
+/* Ajuste para fazer o botão e o checkbox compartilharem o alinhamento da linha */
+.form-wrapper form {
+    display: block !important;
+    overflow: hidden !important; /* Limpa o float do botão interno */
+}
+
+/* Alinhamento do checkbox "Lembrar-me" injetado pelo framework */
+.form-wrapper .form-check,
+.form-wrapper label:has(input[type="checkbox"]) {
+    display: inline-block !important;
+    margin-top: 10px !important;
+    color: #4a5568 !important;
+    font-size: 13px !important;
+    font-transform: none !important;
+}
+
+/* Botão Primário "Logar" posicionado na borda direita inferior do bloco */
+.form-wrapper button,
+.form-wrapper input[type="submit"],
+.form-wrapper .btn-login,
+.form-wrapper .btn-primary {
+    float: right !important;
+    background: #102a45 !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 10px 24px !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    margin-top: 0px !important;
+    box-shadow: none !important;
+    transition: background-color 0.2s !important;
+}
+
+.form-wrapper button:hover,
+.form-wrapper input[type="submit"]:hover,
+.form-wrapper .btn-login:hover {
+    background: #1a3c61 !important;
+}
+
+/* ==========================================================================
+   5. BLOCO INFERIOR DE RECUPERAÇÃO DE SENHA
+   ========================================================================== */
+.recover-wrap {
+    text-align: center !important;
+    margin-top: 35px !important;
+    clear: both !important;
+    width: 100% !important;
+}
+
+.recover-btn {
+    display: inline-block !important;
+    background: transparent !important;
+    border: none !important;
+    color: #4a5568 !important;
+    padding: 0 !important;
+    font-size: 12px !important;
+    text-decoration: none !important;
+    font-weight: 400 !important;
+}
+
+.recover-btn:hover {
+    background: transparent !important;
+    text-decoration: underline !important;
+    color: #1a365d !important;
+}
+
+/* ==========================================================================
+   6. DESIGN REORGANIZADO DO RODAPÉ (FIXO SEM FLUTUAÇÕES DESALINHADAS)
+   ========================================================================== */
+.footer {
+    position: fixed !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    background: transparent !important; /* Neutraliza fundos coloridos indesejados */
+    padding: 15px 0 !important;
+    box-shadow: none !important;
+    z-index: 999 !important;
+    border-top: none !important;
+}
+
+.footer .container-fluid {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.footer .copyright {
+    text-align: center !important;
+    color: #94a3b8 !important;
+    font-size: 12px !important;
+    margin: 0 !important;
+    float: none !important; /* Remove o pull-right nativo do Bootstrap antigo */
+}
+
+.footer a {
+    color: #cbd5e1 !important;
+    text-decoration: none !important;
+    font-weight: 400 !important;
+}
+
+.footer a:hover {
+    color: #ffffff !important;
+    text-decoration: underline !important;
+}
+
+/* ==========================================================================
+   7. TRATAMENTO DE RESPONSIVIDADE (MOBILE / TELAS PEQUENAS)
+   ========================================================================== */
+@media (max-width: 767px) {
+    section .container {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        background: transparent !important;
+    }
+    .banner-sec {
+        display: none !important; /* Oculta a imagem no celular para focar nos dados */
+    }
+    .login-sec {
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+        padding: 30px 20px !important;
+        border-radius: 6px !important;
+    }
+    body {
+        padding-bottom: 80px !important;
+    }
+}

@@ -87,8 +87,5 @@ Abra issues ou PRs com pequenas mudanças. Para mudanças de código, siga o pad
 
 Ajuda
 -----
-Se quiser, posso:
-- Rodar o seed no container (preciso do nome do container ou credenciais),
-- Aplicar correções adicionais e criar um commit,
-- Gerar instruções de deploy para produção.
+.
 

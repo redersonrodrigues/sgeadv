@@ -40,319 +40,1067 @@ INSERT IGNORE INTO grupo_permissao (grupo_id, permissao_id) VALUES
     (4, 19),(4, 20),(4, 21),
     (5, 4),(5, 7),(5, 12),(5, 14),(5, 16);
 
--- =====================================================
--- Test data (from docker/mysql/init/02-seed-test.sql)
--- =====================================================
+INSERT IGNORE INTO estado (id, nome, sigla) VALUES
+                                                (1, 'Rondônia', 'RO'),
+                                                (2, 'Acre', 'AC'),
+                                                (3, 'Amazonas', 'AM'),
+                                                (4, 'Roraima', 'RR'),
+                                                (5, 'Pará', 'PA'),
+                                                (6, 'Amapá', 'AP'),
+                                                (7, 'Tocantins', 'TO'),
+                                                (8, 'Maranhão', 'MA'),
+                                                (9, 'Piauí', 'PI'),
+                                                (10, 'Ceará', 'CE'),
+                                                (11, 'Rio Grande do Norte', 'RN'),
+                                                (12, 'Paraíba', 'PB'),
+                                                (13, 'Pernambuco', 'PE'),
+                                                (14, 'Alagoas', 'AL'),
+                                                (15, 'Sergipe', 'SE'),
+                                                (16, 'Bahia', 'BA'),
+                                                (17, 'Minas Gerais', 'MG'),
+                                                (18, 'Espírito Santo', 'ES'),
+                                                (19, 'Rio de Janeiro', 'RJ'),
+                                                (20, 'São Paulo', 'SP'),
+                                                (21, 'Paraná', 'PR'),
+                                                (22, 'Santa Catarina', 'SC'),
+                                                (23, 'Rio Grande do Sul', 'RS'),
+                                                (24, 'Mato Grosso do Sul', 'MS'),
+                                                (25, 'Mato Grosso', 'MT'),
+                                                (26, 'Goiás', 'GO'),
+                                                (27, 'Distrito Federal', 'DF');
 
-SET NAMES utf8mb4;
-USE advocacia;
+-- ============================================================================
+-- Especialidades
+-- ============================================================================
+INSERT IGNORE INTO especialidade (nome, criado_em, atualizado_em) VALUES
+('Direito Civil', NOW(), NOW()),
+('Direito Penal', NOW(), NOW()),
+('Direito Trabalhista', NOW(), NOW()),
+('Direito de Família', NOW(), NOW()),
+('Direito Previdenciário', NOW(), NOW()),
+('Direito Tributário', NOW(), NOW()),
+('Direito Administrativo', NOW(), NOW()),
+('Direito Empresarial', NOW(), NOW()),
+('Direito Ambiental', NOW(), NOW()),
+('Direito do Consumidor', NOW(), NOW()),
+('Direito Imobiliário', NOW(), NOW()),
+('Direito Processual Civil', NOW(), NOW()),
+('Direito Processual Penal', NOW(), NOW());
 
-START TRANSACTION;
+-- ============================================================================
+-- Cadastro dos 25 Usuários (Tabela pessoa)
+-- ============================================================================
 
--- ---------------------------------------------------------------------------
--- Base geografica
--- ---------------------------------------------------------------------------
+INSERT IGNORE INTO pessoa (id, nome, email, senha, tipo, ativo, sexo, criado_em, atualizado_em) VALUES
+-- Grupo 1: Admin (IDs 1 a 5)
+(1, 'Carlos Silva', 'carlos@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
+(2, 'Ana Costa', 'ana@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW()),
+(3, 'Bruno Souza', 'bruno@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
+(4, 'Carla Diaz', 'carla@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW()),
+(5, 'Daniel Oliveira', 'daniel@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
 
-INSERT IGNORE INTO estado (nome, sigla) VALUES
-    ('Sao Paulo', 'SP'),
-    ('Rio de Janeiro', 'RJ');
+-- Grupo 2: Advogado (IDs 6 a 10)
+(6, 'Eduardo Santos', 'eduardo@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
+(7, 'Fernanda Lima', 'fernanda@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW()),
+(8, 'Gabriel Rocha', 'gabriel@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
+(9, 'Helena Ramos', 'helena@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW()),
+(10, 'Igor Pereira', 'igor@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
 
-INSERT IGNORE INTO cidade (nome, estado_id)
-SELECT 'Sao Paulo', e.id FROM estado e WHERE e.sigla = 'SP';
+-- Grupo 3: Assistente (IDs 11 a 15)
+(11, 'Juliana Gomes', 'juliana@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW()),
+(12, 'Lucas Martins', 'lucas@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
+(13, 'Mariana Alves', 'mariana@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW()),
+(14, 'Natan Ribeiro', 'natan@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
+(15, 'Olívia Ferreira', 'olivia@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW()),
 
-INSERT IGNORE INTO cidade (nome, estado_id)
-SELECT 'Campinas', e.id FROM estado e WHERE e.sigla = 'SP';
+-- Grupo 4: Financeiro (IDs 16 a 20, NOW(), NOW())
+(16, 'Pedro Xavier', 'pedro@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
+(17, 'Patrícia Melo', 'patricia@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW()),
+(18, 'Rodrigo Cruz', 'rodrigo@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
+(19, 'Sílvia Nunes', 'silvia@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW()),
+(20, 'Thiago Barbosa', 'thiago@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
 
-INSERT IGNORE INTO cidade (nome, estado_id)
-SELECT 'Rio de Janeiro', e.id FROM estado e WHERE e.sigla = 'RJ';
+-- Grupo 5: Estagiário (IDs 21 a 25)
+(21, 'Vanessa Lopes', 'vanessa@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW()),
+(22, 'William Cardoso', 'william@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
+(23, 'Yasmin Vieira', 'yasmin@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW()),
+(24, 'Zeca Antunes', 'zeca@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'M', NOW(), NOW()),
+(25, 'Aline Mendes', 'aline@email.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 'F', 'S', 'F', NOW(), NOW());
 
-INSERT IGNORE INTO cidade (nome, estado_id)
-SELECT 'Niteroi', e.id FROM estado e WHERE e.sigla = 'RJ';
 
--- ---------------------------------------------------------------------------
--- Grupos e permissoes
--- ---------------------------------------------------------------------------
+-- ============================================================================
+-- Vínculo dos Usuários aos seus respectivos Grupos (Tabela pessoa_grupo)
+-- ============================================================================
 
-INSERT IGNORE INTO grupo (nome) VALUES
-    ('admin'),
-    ('advogado'),
-    ('assistente'),
-    ('financeiro'),
-    ('estagiario');
+INSERT IGNORE INTO pessoa_grupo (pessoa_id, grupo_id, criado_em, atualizado_em) VALUES
+-- Vínculos do Grupo 1: admin
+(1, 1, NOW(), NOW()), (2, 1, NOW(), NOW()), (3, 1, NOW(), NOW()), (4, 1, NOW(), NOW()), (5, 1, NOW(), NOW()),
 
-INSERT IGNORE INTO permissao (nome, descricao) VALUES
-    ('usuario.gerenciar', 'Criar, editar e remover usuarios'),
-    ('cidades.visualizar', 'Visualizar cadastro de cidades'),
-    ('especialidade.visualizar', 'Visualizar cadastro de especialidades'),
-    ('cliente.visualizar', 'Visualizar clientes'),
-    ('cliente.cadastrar', 'Cadastrar clientes'),
-    ('cliente.editar', 'Editar clientes'),
-    ('processo.visualizar', 'Visualizar processos'),
-    ('processo.cadastrar', 'Cadastrar processos'),
-    ('processo.editar', 'Editar processos'),
-    ('processo.excluir', 'Excluir processos'),
-    ('andamento.registrar', 'Registrar andamento processual'),
-    ('documento.visualizar', 'Visualizar documentos'),
-    ('documento.anexar', 'Anexar documentos'),
-    ('audiencia.visualizar', 'Visualizar audiencias'),
-    ('audiencia.agendar', 'Agendar audiencias'),
-    ('tarefa.visualizar', 'Visualizar tarefas'),
-    ('tarefa.cadastrar', 'Cadastrar tarefas'),
-    ('tarefa.editar', 'Editar tarefas'),
-    ('movimentacao.visualizar', 'Visualizar movimentacoes'),
-    ('movimentacao.cadastrar', 'Cadastrar movimentacoes'),
-    ('movimentacao.editar', 'Editar movimentacoes');
+-- Vínculos do Grupo 2: advogado
+(6, 2, NOW(), NOW()), (7, 2, NOW(), NOW()), (8, 2, NOW(), NOW()), (9, 2, NOW(), NOW()), (10, 2, NOW(), NOW()),
 
--- Admin recebe tudo
-INSERT IGNORE INTO grupo_permissao (grupo_id, permissao_id)
-SELECT g.id, p.id
-FROM grupo g
-CROSS JOIN permissao p
-WHERE g.nome = 'admin';
+-- Vínculos do Grupo 3: assistente
+(11, 3, NOW(), NOW()), (12, 3, NOW(), NOW()), (13, 3, NOW(), NOW()), (14, 3, NOW(), NOW()), (15, 3, NOW(), NOW()),
 
--- Advogado
-INSERT IGNORE INTO grupo_permissao (grupo_id, permissao_id)
-SELECT g.id, p.id
-FROM grupo g
-JOIN permissao p ON p.nome IN (
-    'cliente.visualizar',
-    'processo.visualizar',
-    'processo.cadastrar',
-    'processo.editar',
-    'andamento.registrar',
-    'documento.visualizar',
-    'documento.anexar',
-    'audiencia.visualizar',
-    'audiencia.agendar',
-    'tarefa.visualizar',
-    'tarefa.cadastrar',
-    'tarefa.editar'
-)
-WHERE g.nome = 'advogado';
+-- Vínculos do Grupo 4: financeiro
+(16, 4, NOW(), NOW()), (17, 4, NOW(), NOW()), (18, 4, NOW(), NOW()), (19, 4, NOW(), NOW()), (20, 4, NOW(), NOW()),
 
--- Assistente
-INSERT IGNORE INTO grupo_permissao (grupo_id, permissao_id)
-SELECT g.id, p.id
-FROM grupo g
-JOIN permissao p ON p.nome IN (
-    'cliente.visualizar',
-    'cliente.cadastrar',
-    'cliente.editar',
-    'processo.visualizar',
-    'documento.visualizar',
-    'documento.anexar',
-    'audiencia.visualizar',
-    'tarefa.visualizar',
-    'tarefa.cadastrar',
-    'tarefa.editar'
-)
-WHERE g.nome = 'assistente';
+-- Vínculos do Grupo 5: estagiario
+(21, 5, NOW(), NOW()), (22, 5, NOW(), NOW()), (23, 5, NOW(), NOW()), (24, 5, NOW(), NOW()), (25, 5, NOW(), NOW());
 
--- Financeiro
-INSERT IGNORE INTO grupo_permissao (grupo_id, permissao_id)
-SELECT g.id, p.id
-FROM grupo g
-JOIN permissao p ON p.nome IN (
-    'movimentacao.visualizar',
-    'movimentacao.cadastrar',
-    'movimentacao.editar'
-)
-WHERE g.nome = 'financeiro';
+-- ============================================================================
+-- Especialidades dos Advogados (Grupo 2: IDs 6 a 10)
+-- ============================================================================
+INSERT IGNORE INTO pessoa_especialidade (pessoa_id, especialidade_id, criado_em, atualizado_em) VALUES
+-- Eduardo Santos (ID 6): Direito Civil, Penal, Processual Civil
+(6, 1, NOW(), NOW()), (6, 2, NOW(), NOW()), (6, 12, NOW(), NOW()),
+-- Fernanda Lima (ID 7): Direito de Família, Previdenciário, Consumidor
+(7, 4, NOW(), NOW()), (7, 5, NOW(), NOW()), (7, 10, NOW(), NOW()),
+-- Gabriel Rocha (ID 8): Direito Trabalhista, Administrativo, Empresarial
+(8, 3, NOW(), NOW()), (8, 7, NOW(), NOW()), (8, 8, NOW(), NOW()),
+-- Helena Ramos (ID 9): Direito Tributário, Ambiental, Imobiliário
+(9, 6, NOW(), NOW()), (9, 9, NOW(), NOW()), (9, 11, NOW(), NOW()),
+-- Igor Pereira (ID 10): Direito Civil, Penal, Processual Penal
+(10, 1, NOW(), NOW()), (10, 2, NOW(), NOW()), (10, 13, NOW(), NOW());
 
--- Estagiario
-INSERT IGNORE INTO grupo_permissao (grupo_id, permissao_id)
-SELECT g.id, p.id
-FROM grupo g
-JOIN permissao p ON p.nome IN (
-    'cliente.visualizar',
-    'processo.visualizar',
-    'documento.visualizar',
-    'audiencia.visualizar',
-    'tarefa.visualizar'
-)
-WHERE g.nome = 'estagiario';
+-- ============================================================================
+-- Clientes (para vinculação em processos) - IDs 26 a 31
+-- ============================================================================
+INSERT IGNORE INTO pessoa (id, nome, email, tipo, ativo, sexo, criado_em, atualizado_em) VALUES
+(26, 'João da Silva', 'joao.silva@email.com', 'F', 'S', 'M', NOW(), NOW()),
+(27, 'Maria Oliveira', 'maria.oliveira@email.com', 'F', 'S', 'F', NOW(), NOW()),
+(28, 'Carlos Souza', 'carlos.souza@email.com', 'F', 'S', 'M', NOW(), NOW()),
+(29, 'Patricia Santos', 'patricia.santos@email.com', 'F', 'S', 'F', NOW(), NOW()),
+(30, 'Roberto Costa', 'roberto.costa@email.com', 'F', 'S', 'M', NOW(), NOW()),
+(31, 'Fernanda Lima Ltda', 'fernanda.ltda@email.com', 'J', 'S', 'F', NOW(), NOW());
 
--- ---------------------------------------------------------------------------
--- Especialidades e catalogos juridicos
--- ---------------------------------------------------------------------------
+-- ============================================================================
+-- Processos Judiciais
+-- ============================================================================
+INSERT IGNORE INTO processo (numero_processo, titulo, valor, status, resumo, registrado_por, criado_em, atualizado_em) VALUES
+('0000001-00.2024.1.00.0001', 'Ação Civil Indenizatória', 50000.00, 'Ativo', 'Ação de indenização por danos morais', 6, NOW(), NOW()),
+('0000002-00.2024.2.00.0002', 'Ação Trabalhista', 30000.00, 'Ativo', 'Reclamação trabalhista contra empregador', 8, NOW(), NOW()),
+('0000003-00.2024.3.00.0003', 'Ação de Divórcio', 15000.00, 'Ativo', 'Separação de bens e guarda de filhos', 7, NOW(), NOW()),
+('0000004-00.2024.4.00.0004', 'Ação Penal', 100000.00, 'Suspenso', 'Denúncia por crime de estelionato', 10, NOW(), NOW()),
+('0000005-00.2024.5.00.0005', 'Ação Tributária', 75000.00, 'Ativo', 'Discussão de lançamento tributário', 9, NOW(), NOW());
 
-INSERT IGNORE INTO especialidade (nome) VALUES
-    ('Civil'),
-    ('Trabalhista'),
-    ('Familia'),
-    ('Empresarial');
+-- ============================================================================
+-- Vínculo Pessoa-Processo
+-- ============================================================================
+INSERT IGNORE INTO pessoa_processo (pessoa_id, processo_id, figura_como, criado_em, atualizado_em) VALUES
+-- Processo 1 (Ação Civil Indenizatória): Cliente + Advogado
+(26, 1, 'Autor', NOW(), NOW()), (6, 1, 'Advogado', NOW(), NOW()),
+-- Processo 2 (Ação Trabalhista): Cliente + Advogado
+(27, 2, 'Reclamante', NOW(), NOW()), (8, 2, 'Advogado', NOW(), NOW()),
+-- Processo 3 (Ação de Divórcio): Clientes + Advogado
+(28, 3, 'Autor', NOW(), NOW()), (29, 3, 'Réu', NOW(), NOW()), (7, 3, 'Advogado', NOW(), NOW()),
+-- Processo 4 (Ação Penal): Acusado + Advogado
+(30, 4, 'Acusado', NOW(), NOW()), (10, 4, 'Advogado', NOW(), NOW()),
+-- Processo 5 (Ação Tributária): Contribuinte + Advogado
+(31, 5, 'Contribuinte', NOW(), NOW()), (9, 5, 'Advogado', NOW(), NOW());
 
-INSERT IGNORE INTO tipo_acao (nome) VALUES
-    ('Cobranca'),
-    ('Trabalhista'),
-    ('Familia'),
-    ('Empresarial');
+-- ============================================================================
+-- Tarefas
+-- ============================================================================
+INSERT IGNORE INTO tarefa (titulo, descricao, prioridade, dt_vencimento, registrado_por, criado_em, atualizado_em) VALUES
+('Preparar petição inicial - Processo 1', 'Elaborar petição inicial para ação civil de indenização', 'Alta', DATE_ADD(NOW(), INTERVAL 5 DAY), 6, NOW(), NOW()),
+('Agendar audiência - Processo 2', 'Entrar em contato com a vara para agendar audiência trabalhista', 'Urgente', DATE_ADD(NOW(), INTERVAL 3 DAY), 8, NOW(), NOW()),
+('Revisar documentos - Processo 3', 'Analisar documentação de divórcio e separação de bens', 'Alta', DATE_ADD(NOW(), INTERVAL 7 DAY), 7, NOW(), NOW()),
+('Preparar defesa - Processo 4', 'Elaborar parecer de defesa para ação penal', 'Emergencia', DATE_ADD(NOW(), INTERVAL 2 DAY), 10, NOW(), NOW()),
+('Consultar jurisprudência - Processo 5', 'Pesquisar jurisprudência sobre tributário', 'Baixa', DATE_ADD(NOW(), INTERVAL 10 DAY), 9, NOW(), NOW()),
+('Contatar cliente - João da Silva', 'Agendar reunião com cliente para colher informações', 'Alta', DATE_ADD(NOW(), INTERVAL 4 DAY), 6, NOW(), NOW()),
+('Revisar contrato - Processo 2', 'Analisar contrato de trabalho em disputa', 'Urgente', DATE_ADD(NOW(), INTERVAL 2 DAY), 8, NOW(), NOW());
 
-INSERT IGNORE INTO tipo_documento (nome) VALUES
-    ('Peticao'),
-    ('Contrato'),
-    ('Procuracao'),
-    ('Comprovante'),
-    ('Sentenca');
+-- ============================================================================
+-- Vínculo Pessoa-Tarefa
+-- ============================================================================
+INSERT IGNORE INTO pessoa_tarefa (pessoa_id, tarefa_id, anotacoes, status, atualizado_em) VALUES
+(6, 1, 'Aguardando informações do cliente', 'Em_Andamento', NOW()),
+(8, 2, 'Contato realizado com vara', 'Aberta', NOW()),
+(7, 3, 'Documentação incompleta - solicitar ao cliente', 'Aberta', NOW()),
+(10, 4, 'Prioridade máxima', 'Em_Andamento', NOW()),
+(9, 5, NULL, 'Aberta', NOW()),
+(6, 6, 'Cliente confirmou disponibilidade', 'Em_Andamento', NOW()),
+(8, 7, NULL, 'Aberta', NOW());
 
-INSERT IGNORE INTO acao (nome, tipo_acao_id)
-SELECT 'Acao de Cobranca', ta.id
-FROM tipo_acao ta
-WHERE ta.nome = 'Cobranca';
+-- ============================================================================
+-- Tipos de Ação Judicial
+-- ============================================================================
+INSERT IGNORE INTO tipo_acao (nome, criado_em, atualizado_em) VALUES
+('Ação Civil', NOW(), NOW()),
+('Ação Trabalhista', NOW(), NOW()),
+('Ação de Família', NOW(), NOW()),
+('Ação Penal', NOW(), NOW()),
+('Ação Tributária', NOW(), NOW()),
+('Ação Administrativo', NOW(), NOW());
 
-INSERT IGNORE INTO acao (nome, tipo_acao_id)
-SELECT 'Reclamacao Trabalhista', ta.id
-FROM tipo_acao ta
-WHERE ta.nome = 'Trabalhista';
+-- ============================================================================
+-- Ações Judiciais
+-- ============================================================================
+INSERT IGNORE INTO acao (nome, tipo_acao_id, criado_em, atualizado_em) VALUES
+('Indenização por Danos Morais', 1, NOW(), NOW()),
+('Reclamação Trabalhista', 2, NOW(), NOW()),
+('Ação de Divórcio', 3, NOW(), NOW()),
+('Separação de Bens', 3, NOW(), NOW()),
+('Denúncia de Crime', 4, NOW(), NOW()),
+('Discussão de Lançamento Tributário', 5, NOW(), NOW());
 
--- ---------------------------------------------------------------------------
--- Pessoas
--- ---------------------------------------------------------------------------
+-- ============================================================================
+-- Varas Judiciais
+-- ============================================================================
+INSERT IGNORE INTO vara (nome, cidade_id, criado_em, atualizado_em) VALUES
+('1ª Vara Cível', 1, NOW(), NOW()),
+('2ª Vara Cível', 1, NOW(), NOW()),
+('Vara do Trabalho', 1, NOW(), NOW()),
+('Vara de Família', 1, NOW(), NOW()),
+('1ª Vara Criminal', 1, NOW(), NOW()),
+('Vara Tributária', 1, NOW(), NOW());
 
-INSERT IGNORE INTO pessoa
-    (nome, endereco, bairro, telefone, email, senha, foto, tipo, ativo, observacoes, cidade_id, cpf, rg, dt_nascimento, sexo, cnpj, nome_fantasia, razao_social, inscricao_estadual, cargo, oab, oab_uf, contratado_em, demitido_em, salario)
-VALUES
-    ('Admin Sistema', 'Rua Central, 100', 'Centro', '(11) 90000-0001', 'admin@advocacia.local', SHA2('123456', 256), NULL, 'F', 'S', 'Usuario administrador do sistema', (SELECT id FROM cidade WHERE nome = 'Sao Paulo' LIMIT 1), '11111111111', 'RGADMIN', '1985-01-15 00:00:00', 'M', NULL, NULL, NULL, NULL, 'Socio', NULL, NULL, '2024-01-02 00:00:00', NULL, 15000.00),
-    ('Dr. Paulo Nogueira', 'Rua dos Advogados, 50', 'Jardim Paulista', '(11) 90000-0002', 'paulo@advocacia.local', SHA2('123456', 256), NULL, 'F', 'S', 'Advogado responsavel', (SELECT id FROM cidade WHERE nome = 'Sao Paulo' LIMIT 1), '22222222222', 'RGPAULO', '1988-04-10 00:00:00', 'M', NULL, NULL, NULL, NULL, 'Advogado Senior', '12345', 'SP', '2024-02-01 00:00:00', NULL, 18000.00),
-    ('Mariana Souza', 'Av. Comercial, 200', 'Centro', '(11) 90000-0003', 'mariana@advocacia.local', SHA2('123456', 256), NULL, 'F', 'S', 'Assistente juridica', (SELECT id FROM cidade WHERE nome = 'Campinas' LIMIT 1), '33333333333', 'RGMAR', '1991-09-22 00:00:00', 'F', NULL, NULL, NULL, NULL, 'Assistente Juridico', NULL, NULL, '2024-03-05 00:00:00', NULL, 5200.00),
-    ('Carlos Lima', 'Rua Financeira, 77', 'Centro', '(21) 90000-0004', 'carlos@advocacia.local', SHA2('123456', 256), NULL, 'F', 'S', 'Gestor financeiro', (SELECT id FROM cidade WHERE nome = 'Rio de Janeiro' LIMIT 1), '44444444444', 'RGCARLOS', '1987-06-30 00:00:00', 'M', NULL, NULL, NULL, NULL, 'Gestor Financeiro', NULL, NULL, '2024-04-01 00:00:00', NULL, 8000.00),
-    ('Lucas Ferreira', 'Rua do Estagio, 15', 'Centro', '(21) 90000-0005', 'lucas@advocacia.local', SHA2('123456', 256), NULL, 'F', 'S', 'Estagiario de direito', (SELECT id FROM cidade WHERE nome = 'Niteroi' LIMIT 1), '55555555555', 'RGLUCAS', '2001-11-18 00:00:00', 'M', NULL, NULL, NULL, NULL, 'Estagiario de Direito', NULL, NULL, '2025-01-10 00:00:00', NULL, 1800.00),
-    ('Joao Silva', 'Rua do Cliente, 10', 'Centro', '(11) 98888-0001', 'joao.silva@email.com', SHA2('123456', 256), NULL, 'F', 'S', 'Cliente pessoa fisica', (SELECT id FROM cidade WHERE nome = 'Sao Paulo' LIMIT 1), '66666666666', 'RGJOAO', '1990-02-12 00:00:00', 'M', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-    ('Empresa Alfa LTDA', 'Av. Industrial, 500', 'Distrito', '(21) 98888-0002', 'contato@empresaalfa.com', SHA2('123456', 256), NULL, 'J', 'S', 'Cliente pessoa juridica', (SELECT id FROM cidade WHERE nome = 'Rio de Janeiro' LIMIT 1), NULL, NULL, NULL, NULL, '12345678000199', 'Empresa Alfa', 'Empresa Alfa LTDA', '123456789', NULL, NULL, NULL, NULL, NULL, NULL),
-    ('Empresa Beta LTDA', 'Av. Empresarial, 800', 'Centro', '(21) 98888-0003', 'juridico@empresabeta.com', NULL, NULL, 'J', 'S', 'Parte contraria', (SELECT id FROM cidade WHERE nome = 'Campinas' LIMIT 1), NULL, NULL, NULL, NULL, '98765432000188', 'Empresa Beta', 'Empresa Beta LTDA', '987654321', NULL, NULL, NULL, NULL, NULL, NULL);
+-- ============================================================================
+-- Tipos de Documento
+-- ============================================================================
+INSERT IGNORE INTO tipo_documento (nome, criado_em, atualizado_em) VALUES
+('Petição', NOW(), NOW()),
+('Sentença', NOW(), NOW()),
+('Parecer', NOW(), NOW()),
+('Contrato', NOW(), NOW()),
+('Comprovante de Pagamento', NOW(), NOW()),
+('Documento de Identidade', NOW(), NOW()),
+('Comprovante de Residência', NOW(), NOW()),
+('Recibo', NOW(), NOW());
 
-INSERT IGNORE INTO pessoa_grupo (pessoa_id, grupo_id)
-SELECT p.id, g.id
-FROM pessoa p
-JOIN grupo g ON g.nome = 'admin'
-WHERE p.email = 'admin@advocacia.local';
+-- ============================================================================
+-- Andamento Processual
+-- ============================================================================
+INSERT IGNORE INTO andamento_processual (processo_id, descricao, dt_registro, registrado_por, criado_em, atualizado_em) VALUES
+(1, 'Petição inicial distribuída ao juiz', DATE_SUB(NOW(), INTERVAL 10 DAY), 6, NOW(), NOW()),
+(1, 'Citação do réu realizada', DATE_SUB(NOW(), INTERVAL 7 DAY), 6, NOW(), NOW()),
+(1, 'Aguardando resposta do réu', DATE_SUB(NOW(), INTERVAL 3 DAY), 6, NOW(), NOW()),
+(2, 'Processo registrado na vara trabalhista', DATE_SUB(NOW(), INTERVAL 8 DAY), 8, NOW(), NOW()),
+(2, 'Tentativa de conciliação agendada', DATE_SUB(NOW(), INTERVAL 2 DAY), 8, NOW(), NOW()),
+(3, 'Petição de divórcio protocolada', DATE_SUB(NOW(), INTERVAL 15 DAY), 7, NOW(), NOW()),
+(3, 'Notificação do cônjuge realizada', DATE_SUB(NOW(), INTERVAL 12 DAY), 7, NOW(), NOW()),
+(4, 'Denúncia recebida', DATE_SUB(NOW(), INTERVAL 5 DAY), 10, NOW(), NOW()),
+(5, 'Contestação da administração recebida', DATE_SUB(NOW(), INTERVAL 6 DAY), 9, NOW(), NOW());
 
-INSERT IGNORE INTO pessoa_grupo (pessoa_id, grupo_id)
-SELECT p.id, g.id
-FROM pessoa p
-JOIN grupo g ON g.nome = 'advogado'
-WHERE p.email = 'paulo@advocacia.local';
+-- ============================================================================
+-- Documentos
+-- ============================================================================
+INSERT IGNORE INTO documento (processo_id, tipo_documento_id, nome_arquivo, caminho, descricao, mime, tamanho, enviado_por, criado_em, atualizado_em) VALUES
+(1, 1, 'Peticao_Inicial_Processo_001.pdf', '/documentos/processo_001/peticao_inicial.pdf', 'Petição inicial da ação civil', 'application/pdf', 250000, 6, NOW(), NOW()),
+(1, 3, 'Parecer_Juridico_Processo_001.pdf', '/documentos/processo_001/parecer.pdf', 'Parecer jurídico sobre a causa', 'application/pdf', 180000, 6, NOW(), NOW()),
+(2, 4, 'Contrato_Trabalho.pdf', '/documentos/processo_002/contrato.pdf', 'Contrato de trabalho em questão', 'application/pdf', 320000, 8, NOW(), NOW()),
+(2, 5, 'Comprovante_Pagamento.pdf', '/documentos/processo_002/comprovante.pdf', 'Comprovante de pagamento de salário', 'application/pdf', 150000, 8, NOW(), NOW()),
+(3, 1, 'Peticao_Divorcio.pdf', '/documentos/processo_003/peticao_divorcio.pdf', 'Petição de divórcio consensual', 'application/pdf', 290000, 7, NOW(), NOW()),
+(4, 5, 'Recibo_Delegacia.pdf', '/documentos/processo_004/recibo.pdf', 'Recibo do boletim de ocorrência', 'application/pdf', 120000, 10, NOW(), NOW()),
+(5, 3, 'Parecer_Tributario.pdf', '/documentos/processo_005/parecer.pdf', 'Parecer técnico sobre questão tributária', 'application/pdf', 380000, 9, NOW(), NOW());
 
-INSERT IGNORE INTO pessoa_grupo (pessoa_id, grupo_id)
-SELECT p.id, g.id
-FROM pessoa p
-JOIN grupo g ON g.nome = 'assistente'
-WHERE p.email = 'mariana@advocacia.local';
+-- ============================================================================
+-- Movimentações Financeiras
+-- ============================================================================
+INSERT IGNORE INTO movimentacao (pessoa_id, tipo_mov, direcao, descricao, valor, dt_vencimento, dt_emissao, metodo, status, registrado_por, criado_em, atualizado_em) VALUES
+(26, 'A_Receber', 'Entrada', 'Honorários - Ação Civil Processo 001', 5000.00, DATE_ADD(NOW(), INTERVAL 30 DAY), NOW(), 'Boleto', 'Pendente', 6, NOW(), NOW()),
+(27, 'A_Receber', 'Entrada', 'Honorários - Ação Trabalhista Processo 002', 3000.00, DATE_ADD(NOW(), INTERVAL 30 DAY), NOW(), 'Pix', 'Pendente', 8, NOW(), NOW()),
+(28, 'A_Receber', 'Entrada', 'Honorários - Divórcio Processo 003', 2500.00, DATE_ADD(NOW(), INTERVAL 30 DAY), NOW(), 'Transferencia', 'Pendente', 7, NOW(), NOW()),
+(30, 'A_Receber', 'Entrada', 'Honorários - Ação Penal Processo 004', 8000.00, DATE_ADD(NOW(), INTERVAL 30 DAY), NOW(), 'Boleto', 'Pendente', 10, NOW(), NOW()),
+(31, 'A_Receber', 'Entrada', 'Honorários - Ação Tributária Processo 005', 6000.00, DATE_ADD(NOW(), INTERVAL 30 DAY), NOW(), 'Transferencia', 'Pendente', 9, NOW(), NOW()),
+(NULL, 'A_Pagar', 'Saida', 'Aluguel do escritório - Junho', 3500.00, DATE_ADD(NOW(), INTERVAL 5 DAY), NOW(), 'Transferencia', 'Pendente', 1, NOW(), NOW()),
+(NULL, 'A_Pagar', 'Saida', 'Custas processuais - Processo 001', 1200.00, DATE_ADD(NOW(), INTERVAL 10 DAY), NOW(), 'Boleto', 'Pendente', 6, NOW(), NOW()),
+(NULL, 'A_Pagar', 'Saida', 'Custas processuais - Processo 002', 850.00, DATE_ADD(NOW(), INTERVAL 10 DAY), NOW(), 'Boleto', 'Pendente', 8, NOW(), NOW());
 
-INSERT IGNORE INTO pessoa_grupo (pessoa_id, grupo_id)
-SELECT p.id, g.id
-FROM pessoa p
-JOIN grupo g ON g.nome = 'financeiro'
-WHERE p.email = 'carlos@advocacia.local';
 
-INSERT IGNORE INTO pessoa_grupo (pessoa_id, grupo_id)
-SELECT p.id, g.id
-FROM pessoa p
-JOIN grupo g ON g.nome = 'estagiario'
-WHERE p.email = 'lucas@advocacia.local';
+INSERT IGNORE INTO cidade (nome, estado_id) VALUES
+                                                ('Água Clara', 24),
+                                                ('Alcinópolis', 24),
+                                                ('Amambai', 24),
+                                                ('Anastácio', 24),
+                                                ('Anaurilândia', 24),
+                                                ('Angélica', 24),
+                                                ('Antônio João', 24),
+                                                ('Aparecida do Taboado', 24),
+                                                ('Aquidauana', 24),
+                                                ('Aral Moreira', 24),
+                                                ('Bandeirantes', 24),
+                                                ('Bataguassu', 24),
+                                                ('Bataiporã', 24),
+                                                ('Bela Vista', 24),
+                                                ('Bodoquena', 24),
+                                                ('Bonito', 24),
+                                                ('Brasilândia', 24),
+                                                ('Caarapó', 24),
+                                                ('Camapuã', 24),
+                                                ('Campo Grande', 24),
+                                                ('Caracol', 24),
+                                                ('Cassilândia', 24),
+                                                ('Chapadão do Sul', 24),
+                                                ('Corguinho', 24),
+                                                ('Corumbá', 24),
+                                                ('Costa Rica', 24),
+                                                ('Coxim', 24),
+                                                ('Deodápolis', 24),
+                                                ('Dois Irmãos do Buriti', 24),
+                                                ('Douradina', 24),
+                                                ('Dourados', 24),
+                                                ('Eldorado', 24),
+                                                ('Fátima do Sul', 24),
+                                                ('Figueirão', 24),
+                                                ('Glória de Dourados', 24),
+                                                ('Guia Lopes da Laguna', 24),
+                                                ('Iguatemi', 24),
+                                                ('Inocência', 24),
+                                                ('Itaporã', 24),
+                                                ('Itaquiraí', 24),
+                                                ('Ivinhema', 24),
+                                                ('Japorã', 24),
+                                                ('Jaraguari', 24),
+                                                ('Jardim', 24),
+                                                ('Jateí', 24),
+                                                ('Juti', 24),
+                                                ('Ladário', 24),
+                                                ('Laguna Carapã', 24),
+                                                ('Maracaju', 24),
+                                                ('Miranda', 24),
+                                                ('Mundo Novo', 24),
+                                                ('Naviraí', 24),
+                                                ('Nioaque', 24),
+                                                ('Nova Alvorada do Sul', 24),
+                                                ('Nova Andradina', 24),
+                                                ('Novo Horizonte do Sul', 24),
+                                                ('Paraíso das Águas', 24),
+                                                ('Paranaíba', 24),
+                                                ('Paranhos', 24),
+                                                ('Pedro Gomes', 24),
+                                                ('Ponta Porã', 24),
+                                                ('Porto Murtinho', 24),
+                                                ('Ribas do Rio Pardo', 24),
+                                                ('Rio Brilhante', 24),
+                                                ('Rio Negro', 24),
+                                                ('Rio Verde de Mato Grosso', 24),
+                                                ('Rochedo', 24),
+                                                ('Santa Rita do Pardo', 24),
+                                                ('São Gabriel do Oeste', 24),
+                                                ('Sete Quedas', 24),
+                                                ('Sidrolândia', 24),
+                                                ('Sonora', 24),
+                                                ('Tacuru', 24),
+                                                ('Taquarussu', 24),
+                                                ('Terenos', 24),
+                                                ('Três Lagoas', 24),
+                                                ('Vicentina', 24);
 
-INSERT IGNORE INTO pessoa_especialidade (pessoa_id, especialidade_id)
-SELECT p.id, e.id
-FROM pessoa p
-JOIN especialidade e ON e.nome = 'Civil'
-WHERE p.email = 'paulo@advocacia.local';
 
-INSERT IGNORE INTO pessoa_especialidade (pessoa_id, especialidade_id)
-SELECT p.id, e.id
-FROM pessoa p
-JOIN especialidade e ON e.nome = 'Familia'
-WHERE p.email = 'paulo@advocacia.local';
+-- ============================================================================
+-- CIDADES DO PARANÁ (estado_id = 41) - 399 municípios
+-- ============================================================================
+INSERT IGNORE INTO cidade (nome, estado_id) VALUES
+                                                ('Abatiá', 21),
+                                                ('Adrianópolis', 21),
+                                                ('Agudos do Sul', 21),
+                                                ('Almirante Tamandaré', 21),
+                                                ('Altamira do Paraná', 21),
+                                                ('Alto Paraíso', 21),
+                                                ('Alto Paraná', 21),
+                                                ('Alto Piquiri', 21),
+                                                ('Altônia', 21),
+                                                ('Alvorada do Sul', 21),
+                                                ('Amaporã', 21),
+                                                ('Ampére', 21),
+                                                ('Anahy', 21),
+                                                ('Andirá', 21),
+                                                ('Ângulo', 21),
+                                                ('Antonina', 21),
+                                                ('Antônio Olinto', 21),
+                                                ('Apucarana', 21),
+                                                ('Arapongas', 21),
+                                                ('Arapuã', 21),
+                                                ('Araucaria', 21),
+                                                ('Ariranha do Ivaí', 21),
+                                                ('Assaí', 21),
+                                                ('Assis Chateaubriand', 21),
+                                                ('Astorga', 21),
+                                                ('Atalaia', 21),
+                                                ('Balsa Nova', 21),
+                                                ('Bandirantes', 21),
+                                                ('Barbosa Ferraz', 21),
+                                                ('Barra do Jacaré', 21),
+                                                ('Barracão', 21),
+                                                ('Bela Vista da Caroba', 21),
+                                                ('Bela Vista do Paraíso', 21),
+                                                ('Bituruna', 21),
+                                                ('Boa Esperança', 21),
+                                                ('Boa Esperança do Iguaçu', 21),
+                                                ('Boa Ventura de São Roque', 21),
+                                                ('Boa Vista da Aparecida', 21),
+                                                ('Bocaiúva do Sul', 21),
+                                                ('Bom Jesus do Sul', 21),
+                                                ('Bom Sucesso', 21),
+                                                ('Bom Sucesso do Sul', 21),
+                                                ('Borrazópolis', 21),
+                                                ('Braganey', 21),
+                                                ('Cafeara', 21),
+                                                ('Cafelândia', 21),
+                                                ('Cafezal do Sul', 21),
+                                                ('Califórnia', 21),
+                                                ('Cambará', 21),
+                                                ('Cambé', 21),
+                                                ('Cambira', 21),
+                                                ('Campina da Lagoa', 21),
+                                                ('Campina do Simão', 21),
+                                                ('Campina Grande do Sul', 21),
+                                                ('Campo Bonito', 21),
+                                                ('Campo do Tenente', 21),
+                                                ('Campo Largo', 21),
+                                                ('Campo Mourão', 21),
+                                                ('Cândido de Abreu', 21),
+                                                ('Candói', 21),
+                                                ('Cantagalo', 21),
+                                                ('Capanema', 21),
+                                                ('Capitão Leônidas Marques', 21),
+                                                ('Carambeí', 21),
+                                                ('Carlópolis', 21),
+                                                ('Cascavel', 21),
+                                                ('Castro', 21),
+                                                ('Catanduvas', 21),
+                                                ('Centenário do Sul', 21),
+                                                ('Cerro Azul', 21),
+                                                ('Céu Azul', 21),
+                                                ('Chopinzinho', 21),
+                                                ('Cianorte', 21),
+                                                ('Cidade Gaúcha', 21),
+                                                ('Clevelândia', 21),
+                                                ('Colombo', 21),
+                                                ('Colorado', 21),
+                                                ('Confrontina', 21),
+                                                ('Conselheiro Mairinck', 21),
+                                                ('Contenda', 21),
+                                                ('Corbélia', 21),
+                                                ('Cornélio Procópio', 21),
+                                                ('Coronel Domingos Soares', 21),
+                                                ('Coronel Vivida', 21),
+                                                ('Corumbataí do Sul', 21),
+                                                ('Cruz Machado', 21),
+                                                ('Cruzeiro do Oeste', 21),
+                                                ('Cruzeiro do Sul', 21),
+                                                ('Cruzmaltina', 21),
+                                                ('Curitiba', 21),
+                                                ('Curiúva', 21),
+                                                ('Diamante d''Oeste', 21),
+                                                ('Diamante do Norte', 21),
+                                                ('Diamante do Sul', 21),
+                                                ('Dois Vizinhos', 21),
+                                                ('Douradina', 21),
+                                                ('Doutor Camargo', 21),
+                                                ('Doutor Ulysses', 21),
+                                                ('Enéas Marques', 21),
+                                                ('Engenheiro Beltrão', 21),
+                                                ('Entre Rios do Oeste', 21),
+                                                ('Esperança Nova', 21),
+                                                ('Espigão Alto do Iguaçu', 21),
+                                                ('Farol', 21),
+                                                ('Faxinal', 21),
+                                                ('Fazenda Rio Grande', 21),
+                                                ('Fênix', 21),
+                                                ('Fernandes Pinheiro', 21),
+                                                ('Figueira', 21),
+                                                ('Flor da Serra do Sul', 21),
+                                                ('Floraí', 21),
+                                                ('Floresta', 21),
+                                                ('Florestópolis', 21),
+                                                ('Flórida', 21),
+                                                ('Formosa do Oeste', 21),
+                                                ('Foz do Iguaçu', 21),
+                                                ('Foz do Jordão', 21),
+                                                ('Francisco Alves', 21),
+                                                ('Francisco Beltrão', 21),
+                                                ('General Carneiro', 21),
+                                                ('Godoy Moreira', 21),
+                                                ('Guairaçá', 21),
+                                                ('Guaíra', 21),
+                                                ('Guamiranga', 21),
+                                                ('Guapirama', 21),
+                                                ('Guaporema', 21),
+                                                ('Guaraci', 21),
+                                                ('Guaraniaçu', 21),
+                                                ('Guarapuava', 21),
+                                                ('Guaratuba', 21),
+                                                ('Honório Serpa', 21),
+                                                ('Ibaiti', 21),
+                                                ('Ibema', 21),
+                                                ('Ibiaci', 21),
+                                                ('Ibiporã', 21),
+                                                ('Icaraíma', 21),
+                                                ('Iguaraçu', 21),
+                                                ('Iguatu', 21),
+                                                ('Imbaú', 21),
+                                                ('Imbituva', 21),
+                                                ('Inácio Martins', 21),
+                                                ('Inajá', 21),
+                                                ('Indianópolis', 21),
+                                                ('Ipiranga', 21),
+                                                ('Iporã', 21),
+                                                ('Iracema do Oeste', 21),
+                                                ('Irati', 21),
+                                                ('Iretama', 21),
+                                                ('Itaguajé', 21),
+                                                ('Itaipulândia', 21),
+                                                ('Itambaracá', 21),
+                                                ('Itambé', 21),
+                                                ('Itapejara d''Oeste', 21),
+                                                ('Itaperuçu', 21),
+                                                ('Itaúna do Sul', 21),
+                                                ('Ivaí', 21),
+                                                ('Ivaiporã', 21),
+                                                ('Ivaté', 21),
+                                                ('Ivatuba', 21),
+                                                ('Jaboti', 21),
+                                                ('Jacarezinho', 21),
+                                                ('Jaguapitã', 21),
+                                                ('Jaguariaíva', 21),
+                                                ('Jandaia do Sul', 21),
+                                                ('Janiópolis', 21),
+                                                ('Japira', 21),
+                                                ('Japurá', 21),
+                                                ('Jardim Alegre', 21),
+                                                ('Jardim Olinda', 21),
+                                                ('Jataizinho', 21),
+                                                ('Jesuítas', 21),
+                                                ('Joaquim Távora', 21),
+                                                ('Jundiaí do Sul', 21),
+                                                ('Juranda', 21),
+                                                ('Jussara', 21),
+                                                ('Kaloré', 21),
+                                                ('Lapa', 21),
+                                                ('Laranjal', 21),
+                                                ('Laranjeiras do Sul', 21),
+                                                ('Leópolis', 21),
+                                                ('Lidianópolis', 21),
+                                                ('Lindoeste', 21),
+                                                ('Loanda', 21),
+                                                ('Lobato', 21),
+                                                ('Londrina', 21),
+                                                ('Luiziana', 21),
+                                                ('Lunardelli', 21),
+                                                ('Lupionópolis', 21),
+                                                ('Mallet', 21),
+                                                ('Mamborê', 21),
+                                                ('Mandaguaçu', 21),
+                                                ('Mandaguari', 21),
+                                                ('Mandirituba', 21),
+                                                ('Manfrinópolis', 21),
+                                                ('Mangueirinha', 21),
+                                                ('Manoel Ribas', 21),
+                                                ('Marechal Cândido Rondon', 21),
+                                                ('Maria Helena', 21),
+                                                ('Marialva', 21),
+                                                ('Marilândia do Sul', 21),
+                                                ('Marilena', 21),
+                                                ('Mariluz', 21),
+                                                ('Maringá', 21),
+                                                ('Mariópolis', 21),
+                                                ('Maripá', 21),
+                                                ('Marmeleiro', 21),
+                                                ('Marquinho', 21),
+                                                ('Marumbi', 21),
+                                                ('Matelândia', 21),
+                                                ('Matinhos', 21),
+                                                ('Mato Rico', 21),
+                                                ('Mauá da Serra', 21),
+                                                ('Medianeira', 21),
+                                                ('Mercedes', 21),
+                                                ('Mirador', 21),
+                                                ('Miraselva', 21),
+                                                ('Missal', 21),
+                                                ('Moreira Sales', 21),
+                                                ('Morretes', 21),
+                                                ('Munhoz de Melo', 21),
+                                                ('Nossa Senhora das Graças', 21),
+                                                ('Nova Aliança do Ivaí', 21),
+                                                ('Nova América da Colina', 21),
+                                                ('Nova Aurora', 21),
+                                                ('Nova Cantu', 21),
+                                                ('Nova Esperança', 21),
+                                                ('Nova Esperança do Sudoeste', 21),
+                                                ('Nova Fátima', 21),
+                                                ('Nova Laranjeiras', 21),
+                                                ('Nova Londrina', 21),
+                                                ('Nova Olímpia', 21),
+                                                ('Nova Prata do Iguaçu', 21),
+                                                ('Nova Santa Bárbara', 21),
+                                                ('Nova Santa Rosa', 21),
+                                                ('Nova Tebas', 21),
+                                                ('Novo Itacolomi', 21),
+                                                ('Ortigueira', 21),
+                                                ('Ourizona', 21),
+                                                ('Ouro Verde do Oeste', 21),
+                                                ('Paiçandu', 21),
+                                                ('Palmas', 21),
+                                                ('Palmeira', 21),
+                                                ('Palmital', 21),
+                                                ('Palotina', 21),
+                                                ('Paraíso do Norte', 21),
+                                                ('Paranacity', 21),
+                                                ('Paranaguá', 21),
+                                                ('Paranapoema', 21),
+                                                ('Paranavaí', 21),
+                                                ('Pato Bragado', 21),
+                                                ('Pato Branco', 21),
+                                                ('Paula Freitas', 21),
+                                                ('Paulo Frontin', 21),
+                                                ('Peabiru', 21),
+                                                ('Perobal', 21),
+                                                ('Pérola', 21),
+                                                ('Pérola d''Oeste', 21),
+                                                ('Piên', 21),
+                                                ('Pinhais', 21),
+                                                ('Pinhal de São Bento', 21),
+                                                ('Pinhalão', 21),
+                                                ('Pinhão', 21),
+                                                ('Piraí do Sul', 21),
+                                                ('Piraquara', 21),
+                                                ('Pitanga', 21),
+                                                ('Pitangueiras', 21),
+                                                ('Planaltina do Paraná', 21),
+                                                ('Planalto', 21),
+                                                ('Ponta Grossa', 21),
+                                                ('Pontal do Paraná', 21),
+                                                ('Porecatu', 21),
+                                                ('Porto Amazonas', 21),
+                                                ('Porto Barreiro', 21),
+                                                ('Porto Rico', 21),
+                                                ('Porto Vitória', 21),
+                                                ('Prado Ferreira', 21),
+                                                ('Pranchita', 21),
+                                                ('Presidente Castelo Branco', 21),
+                                                ('Primeiro de Maio', 21),
+                                                ('Prudentópolis', 21),
+                                                ('Quarto Centenário', 21),
+                                                ('Quatiguá', 21),
+                                                ('Quatro Pontes', 21),
+                                                ('Quedas do Iguaçu', 21),
+                                                ('Querência do Norte', 21),
+                                                ('Quinta do Sol', 21),
+                                                ('Quitandinha', 21),
+                                                ('Ramilândia', 21),
+                                                ('Rancho Alegre', 21),
+                                                ('Rancho Alegre d''Oeste', 21),
+                                                ('Realeza', 21),
+                                                ('Rebouças', 21),
+                                                ('Renascença', 21),
+                                                ('Reserva', 21),
+                                                ('Reserva do Iguaçu', 21),
+                                                ('Ribeirão Claro', 21),
+                                                ('Ribeirão do Pinhal', 21),
+                                                ('Rio Azul', 21),
+                                                ('Rio Bom', 21),
+                                                ('Rio Bonito do Iguaçu', 21),
+                                                ('Rio Branco do Ivaí', 21),
+                                                ('Rio Branco do Sul', 21),
+                                                ('Rio Negro', 21),
+                                                ('Rolândia', 21),
+                                                ('Roncador', 21),
+                                                ('Rondon', 21),
+                                                ('Rosário do Ivaí', 21),
+                                                ('Sabáudia', 21),
+                                                ('Salgado Filho', 21),
+                                                ('Salto do Itararé', 21),
+                                                ('Salto do Lontra', 21),
+                                                ('Santa Amélia', 21),
+                                                ('Santa Cecília do Pavão', 21),
+                                                ('Santa Cruz de Monte Castelo', 21),
+                                                ('Santa Fé', 21),
+                                                ('Santa Helena', 21),
+                                                ('Santa Inês', 21),
+                                                ('Santa Isabel do Ivaí', 21),
+                                                ('Santa Izabel do Oeste', 21),
+                                                ('Santa Lúcia', 21),
+                                                ('Santa Maria do Oeste', 21),
+                                                ('Santa Mariana', 21),
+                                                ('Santa Mônica', 21),
+                                                ('Santa Tereza do Oeste', 21),
+                                                ('Santa Terezinha de Itaipu', 21),
+                                                ('Santana do Itararé', 21),
+                                                ('Santo Antônio da Platina', 21),
+                                                ('Santo Antônio do Caiuá', 21),
+                                                ('Santo Antônio do Paraíso', 21),
+                                                ('Santo Antônio do Sudoeste', 21),
+                                                ('Santo Inácio', 21),
+                                                ('São Carlos do Ivaí', 21),
+                                                ('São Jerônimo da Serra', 21),
+                                                ('São João', 21),
+                                                ('São João do Caiuá', 21),
+                                                ('São João do Ivaí', 21),
+                                                ('São João do Triunfo', 21),
+                                                ('São Jorge d''Oeste', 21),
+                                                ('São Jorge do Ivaí', 21),
+                                                ('São Jorge do Patrocínio', 21),
+                                                ('São José da Boa Vista', 21),
+                                                ('São José das Palmeiras', 21),
+                                                ('São José dos Pinhais', 21),
+                                                ('São Manoel do Paraná', 21),
+                                                ('São Mateus do Sul', 21),
+                                                ('São Miguel do Iguaçu', 21),
+                                                ('São Pedro do Iguaçu', 21),
+                                                ('São Pedro do Ivaí', 21),
+                                                ('São Pedro do Paraná', 21),
+                                                ('São Sebastião da Amoreira', 21),
+                                                ('São Tomé', 21),
+                                                ('Sapopema', 21),
+                                                ('Sarandi', 21),
+                                                ('Saudade do Iguaçu', 21),
+                                                ('Sengés', 21),
+                                                ('Serranópolis do Iguaçu', 21),
+                                                ('Sertaneja', 21),
+                                                ('Sertanópolis', 21),
+                                                ('Siqueira Campos', 21),
+                                                ('Sulina', 21),
+                                                ('Tamarana', 21),
+                                                ('Tamporã', 21),
+                                                ('Tapejara', 21),
+                                                ('Tapira', 21),
+                                                ('Teixeira Soares', 21),
+                                                ('Telêmaco Borba', 21),
+                                                ('Terra Boa', 21),
+                                                ('Terra Rica', 21),
+                                                ('Terra Roxa', 21),
+                                                ('Tijucas do Sul', 21),
+                                                ('Toledo', 21),
+                                                ('Tomazina', 21),
+                                                ('Três Barras do Paraná', 21),
+                                                ('Tunas do Paraná', 21),
+                                                ('Tuneiras do Oeste', 21),
+                                                ('Tupãssi', 21),
+                                                ('Turvo', 21),
+                                                ('Ubiratã', 21),
+                                                ('Umuarama', 21),
+                                                ('União da Vitória', 21),
+                                                ('Uniflor', 21),
+                                                ('Uraí', 21),
+                                                ('Ventania', 21),
+                                                ('Vera Cruz do Oeste', 21),
+                                                ('Verê', 21),
+                                                ('Virmond', 21),
+                                                ('Vitorino', 21),
+                                                ('Wenceslau Braz', 21),
+                                                ('Xambrê', 21);
 
--- ---------------------------------------------------------------------------
--- Estrutura juridica
--- ---------------------------------------------------------------------------
 
-INSERT IGNORE INTO vara (nome, cidade_id)
-SELECT '1a Vara Civel', c.id FROM cidade c WHERE c.nome = 'Sao Paulo' LIMIT 1;
+-- ============================================================================
+-- CIDADES DE SÃO PAULO (estado_id = 35) - Amostra representativa (Principais e Regiões)
+-- ============================================================================
+INSERT IGNORE INTO cidade (nome, estado_id, criado_em, atualizado_em) VALUES
+                                                                          ('Adamantina', 20, NOW(), NOW()), ('Adolfo', 20, NOW(), NOW()), ('Aguaí', 20, NOW(), NOW()),
+                                                                          ('Águas da Prata', 20, NOW(), NOW()), ('Águas de Lindoia', 20, NOW(), NOW()), ('Águas de Santa Bárbara', 20, NOW(), NOW()),
+                                                                          ('Águas de São Pedro', 20, NOW(), NOW()), ('Agudos', 20, NOW(), NOW()), ('Alambari', 20, NOW(), NOW()),
+                                                                          ('Alfredo Marcondes', 20, NOW(), NOW()), ('Altair', 20, NOW(), NOW()), ('Altinópolis', 20, NOW(), NOW()),
+                                                                          ('Alto Alegre', 20, NOW(), NOW()), ('Alumínio', 20, NOW(), NOW()), ('Álvares Florence', 20, NOW(), NOW()),
+                                                                          ('Álvares Machado', 20, NOW(), NOW()), ('Álvaro de Carvalho', 20, NOW(), NOW()), ('Alvinlândia', 20, NOW(), NOW()),
+                                                                          ('Americana', 20, NOW(), NOW()), ('Américo de Campos', 20, NOW(), NOW()), ('Américo Brasiliense', 20, NOW(), NOW()),
+                                                                          ('Amparo', 20, NOW(), NOW()), ('Analândia', 20, NOW(), NOW()), ('Andradina', 20, NOW(), NOW()),
+                                                                          ('Angatuba', 20, NOW(), NOW()), ('Anhembi', 20, NOW(), NOW()), ('Anhumas', 20, NOW(), NOW()),
+                                                                          ('Aparecida', 20, NOW(), NOW()), ('Aparecida d''Oeste', 20, NOW(), NOW()), ('Apiaí', 20, NOW(), NOW()),
+                                                                          ('Araçariguama', 20, NOW(), NOW()), ('Araçatuba', 20, NOW(), NOW()), ('Araçoiaba da Serra', 20, NOW(), NOW()),
+                                                                          ('Aramina', 20, NOW(), NOW()), ('Arandu', 20, NOW(), NOW()), ('Arapeí', 20, NOW(), NOW()),
+                                                                          ('Araraquara', 20, NOW(), NOW()), ('Araras', 20, NOW(), NOW()), ('Arco-Íris', 20, NOW(), NOW()),
+                                                                          ('Arealva', 20, NOW(), NOW()), ('Areias', 20, NOW(), NOW()), ('Areiópolis', 20, NOW(), NOW()),
+                                                                          ('Ariranha', 20, NOW(), NOW()), ('Artur Nogueira', 20, NOW(), NOW()), ('Arujá', 20, NOW(), NOW()),
+                                                                          ('Aspásia', 20, NOW(), NOW()), ('Assis', 20, NOW(), NOW()), ('Atibaia', 20, NOW(), NOW()),
+                                                                          ('Auriflama', 20, NOW(), NOW()), ('Avaí', 20, NOW(), NOW()), ('Avanhandava', 20, NOW(), NOW()),
+                                                                          ('Avaré', 20, NOW(), NOW()), ('Bady Bassitt', 20, NOW(), NOW()), ('Balbinos', 20, NOW(), NOW()),
+                                                                          ('Bálsamo', 20, NOW(), NOW()), ('Bananal', 20, NOW(), NOW()), ('Barão de Antonina', 20, NOW(), NOW()),
+                                                                          ('Barbosa', 20, NOW(), NOW()), ('Bariri', 20, NOW(), NOW()), ('Barra Bonita', 20, NOW(), NOW()),
+                                                                          ('Barra do Chapéu', 20, NOW(), NOW()), ('Barra do Turvo', 20, NOW(), NOW()), ('Barretos', 20, NOW(), NOW()),
+                                                                          ('Barrinha', 20, NOW(), NOW()), ('Barueri', 20, NOW(), NOW()), ('Bastos', 20, NOW(), NOW()),
+                                                                          ('Batatais', 20, NOW(), NOW()), ('Bauru', 20, NOW(), NOW()), ('Bebedouro', 20, NOW(), NOW()),
+                                                                          ('Bento de Abreu', 20, NOW(), NOW()), ('Bernardino de Campos', 20, NOW(), NOW()), ('Bertioga', 20, NOW(), NOW()),
+                                                                          ('Bilac', 20, NOW(), NOW()), ('Birigui', 20, NOW(), NOW()), ('Biritiba Mirim', 20, NOW(), NOW()),
+                                                                          ('Boa Esperança do Sul', 20, NOW(), NOW()), ('Bocaina', 20, NOW(), NOW()), ('Bofete', 20, NOW(), NOW()),
+                                                                          ('Boituva', 20, NOW(), NOW()), ('Bom Jesus dos Perdões', 20, NOW(), NOW()), ('Bom Sucesso de Itararé', 20, NOW(), NOW()),
+                                                                          ('Borá', 20, NOW(), NOW()), ('Boracéia', 20, NOW(), NOW()), ('Borborema', 20, NOW(), NOW()),
+                                                                          ('Borebi', 20, NOW(), NOW()), ('Botucatu', 20, NOW(), NOW()), ('Bragança Paulista', 20, NOW(), NOW()),
+                                                                          ('Braúna', 20, NOW(), NOW()), ('Brejo Alegre', 20, NOW(), NOW()), ('Brodowski', 20, NOW(), NOW()),
+                                                                          ('Brotas', 20, NOW(), NOW()), ('Buri', 20, NOW(), NOW()), ('Buritama', 20, NOW(), NOW()),
+                                                                          ('Buritizal', 20, NOW(), NOW()), ('Cabrália Paulista', 20, NOW(), NOW()), ('Cabreúva', 20, NOW(), NOW()),
+                                                                          ('Caçapava', 20, NOW(), NOW()), ('Cachoeira Paulista', 20, NOW(), NOW()), ('Caconde', 20, NOW(), NOW()),
+                                                                          ('Caiabu', 20, NOW(), NOW()), ('Caieiras', 20, NOW(), NOW()), ('Caiuá', 20, NOW(), NOW()),
+                                                                          ('Cajamar', 20, NOW(), NOW()), ('Cajati', 20, NOW(), NOW()), ('Cajobi', 20, NOW(), NOW()),
+                                                                          ('Cajuru', 20, NOW(), NOW()), ('Campina do Monte Alegre', 20, NOW(), NOW()), ('Campinas', 20, NOW(), NOW()),
+                                                                          ('Campo Limpo Paulista', 20, NOW(), NOW()), ('Campos do Jordão', 20, NOW(), NOW()), ('Campos Novos Paulista', 20, NOW(), NOW()),
+                                                                          ('Cananéia', 20, NOW(), NOW()), ('Canas', 20, NOW(), NOW()), ('Cândido Mota', 20, NOW(), NOW()),
+                                                                          ('Cândido Rodrigues', 20, NOW(), NOW()), ('Canitar', 20, NOW(), NOW()), ('Capão Bonito', 20, NOW(), NOW()),
+                                                                          ('Capela do Alto', 20, NOW(), NOW()), ('Capivari', 20, NOW(), NOW()), ('Caraguatatuba', 20, NOW(), NOW()),
+                                                                          ('Carapicuíba', 20, NOW(), NOW()), ('Cardoso', 20, NOW(), NOW()), ('Casa Branca', 20, NOW(), NOW()),
+                                                                          ('Cássia dos Coqueiros', 20, NOW(), NOW()), ('Castilho', 20, NOW(), NOW()), ('Catanduva', 20, NOW(), NOW()),
+                                                                          ('Catiguá', 20, NOW(), NOW()), ('Cedral', 20, NOW(), NOW()), ('Cerqueira César', 20, NOW(), NOW()),
+                                                                          ('Cerquilho', 20, NOW(), NOW()), ('Cesário Lange', 20, NOW(), NOW()), ('Charqueada', 20, NOW(), NOW()),
+                                                                          ('Chavantes', 20, NOW(), NOW()), ('Clementina', 20, NOW(), NOW()), ('Colina', 20, NOW(), NOW()),
+                                                                          ('Colômbia', 20, NOW(), NOW()), ('Conchal', 20, NOW(), NOW()), ('Conchas', 20, NOW(), NOW()),
+                                                                          ('Cordeirópolis', 20, NOW(), NOW()), ('Coroados', 20, NOW(), NOW()), ('Coronel Macedo', 20, NOW(), NOW()),
+                                                                          ('Corumbataí', 20, NOW(), NOW()), ('Cosmópolis', 20, NOW(), NOW()), ('Cosmorama', 20, NOW(), NOW()),
+                                                                          ('Cotia', 20, NOW(), NOW()), ('Cravinhos', 20, NOW(), NOW()), ('Cristais Paulista', 20, NOW(), NOW()),
+                                                                          ('Cruzeiro', 20, NOW(), NOW()), ('Cubatão', 20, NOW(), NOW()), ('Cunha', 20, NOW(), NOW()),
+                                                                          ('Descalvado', 20, NOW(), NOW()), ('Diadema', 20, NOW(), NOW()), ('Dirce Reis', 20, NOW(), NOW()),
+                                                                          ('Divinolândia', 20, NOW(), NOW()), ('Dobrada', 20, NOW(), NOW()), ('Dois Córregos', 20, NOW(), NOW()),
+                                                                          ('Dolcinópolis', 20, NOW(), NOW()), ('Dourado', 20, NOW(), NOW()), ('Dracena', 20, NOW(), NOW()),
+                                                                          ('Duartina', 20, NOW(), NOW()), ('Dumont', 20, NOW(), NOW()), ('Echaporã', 20, NOW(), NOW()),
+                                                                          ('Eldorado', 20, NOW(), NOW()), ('Elias Fausto', 20, NOW(), NOW()), ('Elisiário', 20, NOW(), NOW()),
+                                                                          ('Embaúba', 20, NOW(), NOW()), ('Embu das Artes', 20, NOW(), NOW()), ('Embu-Guaçu', 20, NOW(), NOW()),
+                                                                          ('Emilianópolis', 20, NOW(), NOW()), ('Engenheiro Coelho', 20, NOW(), NOW()), ('Espirito Santo do Pinhal', 20, NOW(), NOW()),
+                                                                          ('Espirito Santo do Turvo', 20, NOW(), NOW()), ('Estrela d''Oeste', 20, NOW(), NOW()), ('Estrela do Norte', 20, NOW(), NOW()),
+                                                                          ('Euclides da Cunha Paulista', 20, NOW(), NOW()), ('Fartura', 20, NOW(), NOW()), ('Fernando Prestes', 20, NOW(), NOW()),
+                                                                          ('Fernandópolis', 20, NOW(), NOW()), ('Fernão', 20, NOW(), NOW()), ('Ferraz de Vasconcelos', 20, NOW(), NOW()),
+                                                                          ('Flora Rica', 20, NOW(), NOW()), ('Floreal', 20, NOW(), NOW()), ('Flórida Paulista', 20, NOW(), NOW()),
+                                                                          ('Florínea', 20, NOW(), NOW()), ('Franca', 20, NOW(), NOW()), ('Francisco Morato', 20, NOW(), NOW()),
+                                                                          ('Franco da Rocha', 20, NOW(), NOW()), ('Gabriel Monteiro', 20, NOW(), NOW()), ('Gália', 20, NOW(), NOW()),
+                                                                          ('Garça', 20, NOW(), NOW()), ('Gastão Vidigal', 20, NOW(), NOW()), ('Gavião Peixoto', 20, NOW(), NOW()),
+                                                                          ('General Salgado', 20, NOW(), NOW()), ('Getulina', 20, NOW(), NOW()), ('Glicério', 20, NOW(), NOW()),
+                                                                          ('Guaiçara', 20, NOW(), NOW()), ('Guaimbê', 20, NOW(), NOW()), ('Guaira', 20, NOW(), NOW()),
+                                                                          ('Guapiaçu', 20, NOW(), NOW()), ('Guapiara', 20, NOW(), NOW()), ('Guará', 20, NOW(), NOW()),
+                                                                          ('Guaraçaí', 20, NOW(), NOW()), ('Guaraci', 20, NOW(), NOW()), ('Guarani d''Oeste', 20, NOW(), NOW()),
+                                                                          ('Guarantã', 20, NOW(), NOW()), ('Guararapes', 20, NOW(), NOW()), ('Guararema', 20, NOW(), NOW()),
+                                                                          ('Guaratinguetá', 20, NOW(), NOW()), ('Guareí', 20, NOW(), NOW()), ('Guariba', 20, NOW(), NOW()),
+                                                                          ('Guarujá', 20, NOW(), NOW()), ('Guarulhos', 20, NOW(), NOW()), ('Guatapará', 20, NOW(), NOW()),
+                                                                          ('Guzolândia', 20, NOW(), NOW());
 
-INSERT IGNORE INTO vara (nome, cidade_id)
-SELECT '2a Vara Trabalhista', c.id FROM cidade c WHERE c.nome = 'Campinas' LIMIT 1;
-
-INSERT IGNORE INTO processo
-    (numero_processo, titulo, valor, status, resumo, registrado_por, vara_id, acao_id)
-VALUES
-    ('0001234-56.2026.8.26.0100', 'Acao de cobranca - Joao Silva', 25000.00, 'Ativo', 'Processo de cobranca para teste da aplicacao.', (SELECT id FROM pessoa WHERE email = 'admin@advocacia.local' LIMIT 1), (SELECT id FROM vara WHERE nome = '1a Vara Civel' LIMIT 1), (SELECT id FROM acao WHERE nome = 'Acao de Cobranca' LIMIT 1)),
-    ('0009876-54.2026.8.26.0100', 'Reclamacao trabalhista - Empresa Alfa', 42000.00, 'Suspenso', 'Processo trabalhista para teste da aplicacao.', (SELECT id FROM pessoa WHERE email = 'paulo@advocacia.local' LIMIT 1), (SELECT id FROM vara WHERE nome = '2a Vara Trabalhista' LIMIT 1), (SELECT id FROM acao WHERE nome = 'Reclamacao Trabalhista' LIMIT 1));
-
-INSERT IGNORE INTO pessoa_processo (pessoa_id, processo_id, figura_como)
-SELECT p.id, pr.id, 'Autor'
-FROM pessoa p
-JOIN processo pr ON pr.numero_processo = '0001234-56.2026.8.26.0100'
-WHERE p.email = 'joao.silva@email.com';
-
-INSERT IGNORE INTO pessoa_processo (pessoa_id, processo_id, figura_como)
-SELECT p.id, pr.id, 'Advogado do Autor'
-FROM pessoa p
-JOIN processo pr ON pr.numero_processo = '0001234-56.2026.8.26.0100'
-WHERE p.email = 'paulo@advocacia.local';
-
-INSERT IGNORE INTO pessoa_processo (pessoa_id, processo_id, figura_como)
-SELECT p.id, pr.id, 'Reu'
-FROM pessoa p
-JOIN processo pr ON pr.numero_processo = '0001234-56.2026.8.26.0100'
-WHERE p.email = 'juridico@empresabeta.com';
-
-INSERT IGNORE INTO pessoa_processo (pessoa_id, processo_id, figura_como)
-SELECT p.id, pr.id, 'Reclamante'
-FROM pessoa p
-JOIN processo pr ON pr.numero_processo = '0009876-54.2026.8.26.0100'
-WHERE p.email = 'mariana@advocacia.local';
-
-INSERT IGNORE INTO pessoa_processo (pessoa_id, processo_id, figura_como)
-SELECT p.id, pr.id, 'Advogado do Reclamante'
-FROM pessoa p
-JOIN processo pr ON pr.numero_processo = '0009876-54.2026.8.26.0100'
-WHERE p.email = 'paulo@advocacia.local';
-
-INSERT IGNORE INTO documento
-    (processo_id, tipo_documento_id, nome_arquivo, caminho, descricao, mime, tamanho, enviado_por)
-VALUES
-    ((SELECT id FROM processo WHERE numero_processo = '0001234-56.2026.8.26.0100' LIMIT 1), (SELECT id FROM tipo_documento WHERE nome = 'Peticao' LIMIT 1), 'peticao_inicial.pdf', 'App/Uploads/processos/0001234-56.2026.8.26.0100/peticao_inicial.pdf', 'Peticao inicial do processo de cobranca', 'application/pdf', 128, (SELECT id FROM pessoa WHERE email = 'paulo@advocacia.local' LIMIT 1)),
-    ((SELECT id FROM processo WHERE numero_processo = '0001234-56.2026.8.26.0100' LIMIT 1), (SELECT id FROM tipo_documento WHERE nome = 'Procuracao' LIMIT 1), 'procuracao.pdf', 'App/Uploads/processos/0001234-56.2026.8.26.0100/procuracao.pdf', 'Procuracao assinada', 'application/pdf', 64, (SELECT id FROM pessoa WHERE email = 'mariana@advocacia.local' LIMIT 1)),
-    ((SELECT id FROM processo WHERE numero_processo = '0009876-54.2026.8.26.0100' LIMIT 1), (SELECT id FROM tipo_documento WHERE nome = 'Contrato' LIMIT 1), 'contrato_social.pdf', 'App/Uploads/processos/0009876-54.2026.8.26.0100/contrato_social.pdf', 'Contrato social da parte contraria', 'application/pdf', 96, (SELECT id FROM pessoa WHERE email = 'carlos@advocacia.local' LIMIT 1));
-
-INSERT IGNORE INTO andamento_processual
-    (processo_id, descricao, dt_registro, registrado_por)
-VALUES
-    ((SELECT id FROM processo WHERE numero_processo = '0001234-56.2026.8.26.0100' LIMIT 1), 'Distribuicao inicial', '2026-05-02 09:00:00', (SELECT id FROM pessoa WHERE email = 'admin@advocacia.local' LIMIT 1)),
-    ((SELECT id FROM processo WHERE numero_processo = '0001234-56.2026.8.26.0100' LIMIT 1), 'Citacao expedida', '2026-05-10 14:30:00', (SELECT id FROM pessoa WHERE email = 'paulo@advocacia.local' LIMIT 1)),
-    ((SELECT id FROM processo WHERE numero_processo = '0009876-54.2026.8.26.0100' LIMIT 1), 'Audiencia de conciliacao marcada', '2026-06-01 11:15:00', (SELECT id FROM pessoa WHERE email = 'paulo@advocacia.local' LIMIT 1));
-
-INSERT IGNORE INTO audiencia
-    (processo_id, advogado_id, dt_audiencia, local, juiz, situacao, observacoes, registrado_por)
-VALUES
-    ((SELECT id FROM processo WHERE numero_processo = '0001234-56.2026.8.26.0100' LIMIT 1), (SELECT id FROM pessoa WHERE email = 'paulo@advocacia.local' LIMIT 1), '2026-07-10 10:00:00', 'Forum Central - Sala 2', 'Juiz de Direito', 'Agendada', 'Audiencia inicial de teste', (SELECT id FROM pessoa WHERE email = 'mariana@advocacia.local' LIMIT 1)),
-    ((SELECT id FROM processo WHERE numero_processo = '0009876-54.2026.8.26.0100' LIMIT 1), (SELECT id FROM pessoa WHERE email = 'paulo@advocacia.local' LIMIT 1), '2026-07-18 15:00:00', 'VT de Campinas - Sala 1', 'Juiza do Trabalho', 'Agendada', 'Audiencia trabalhista de teste', (SELECT id FROM pessoa WHERE email = 'mariana@advocacia.local' LIMIT 1));
-
-INSERT IGNORE INTO audiencia_participante
-    (audiencia_id, pessoa_id, processo_id, confirmou_presenca)
-VALUES
-    ((SELECT id FROM audiencia WHERE local = 'Forum Central - Sala 2' LIMIT 1), (SELECT id FROM pessoa WHERE email = 'joao.silva@email.com' LIMIT 1), (SELECT id FROM processo WHERE numero_processo = '0001234-56.2026.8.26.0100' LIMIT 1), 1),
-    ((SELECT id FROM audiencia WHERE local = 'Forum Central - Sala 2' LIMIT 1), (SELECT id FROM pessoa WHERE email = 'juridico@empresabeta.com' LIMIT 1), (SELECT id FROM processo WHERE numero_processo = '0001234-56.2026.8.26.0100' LIMIT 1), 0),
-    ((SELECT id FROM audiencia WHERE local = 'VT de Campinas - Sala 1' LIMIT 1), (SELECT id FROM pessoa WHERE email = 'mariana@advocacia.local' LIMIT 1), (SELECT id FROM processo WHERE numero_processo = '0009876-54.2026.8.26.0100' LIMIT 1), 1);
-
-INSERT IGNORE INTO tarefa
-    (titulo, descricao, prioridade, dt_vencimento, dt_conclusao, registrado_por)
-VALUES
-    ('Protocolar peticao inicial', 'Protocolar peticao no processo de cobranca', 'Urgente', '2026-06-25 18:00:00', NULL, (SELECT id FROM pessoa WHERE email = 'mariana@advocacia.local' LIMIT 1)),
-    ('Revisar documentos da audiencia', 'Separar documentos para a audiencia agendada', 'Alta', '2026-07-08 12:00:00', NULL, (SELECT id FROM pessoa WHERE email = 'paulo@advocacia.local' LIMIT 1)),
-    ('Acompanhar retorno financeiro', 'Verificar pagamento pendente do cliente', 'Baixa', '2026-06-30 12:00:00', NULL, (SELECT id FROM pessoa WHERE email = 'carlos@advocacia.local' LIMIT 1));
-
-INSERT IGNORE INTO pessoa_tarefa (pessoa_id, tarefa_id, anotacoes, status, atualizado_em)
-VALUES
-    ((SELECT id FROM pessoa WHERE email = 'paulo@advocacia.local' LIMIT 1), (SELECT id FROM tarefa WHERE titulo = 'Protocolar peticao inicial' LIMIT 1), 'Responsavel pelo protocolo', 'Em_Andamento', '2026-06-22 09:00:00'),
-    ((SELECT id FROM pessoa WHERE email = 'mariana@advocacia.local' LIMIT 1), (SELECT id FROM tarefa WHERE titulo = 'Revisar documentos da audiencia' LIMIT 1), 'Separar e conferir provas', 'Aberta', '2026-06-22 09:15:00'),
-    ((SELECT id FROM pessoa WHERE email = 'carlos@advocacia.local' LIMIT 1), (SELECT id FROM tarefa WHERE titulo = 'Acompanhar retorno financeiro' LIMIT 1), 'Aguardar comprovante do cliente', 'Aberta', '2026-06-22 09:20:00');
-
-INSERT IGNORE INTO movimentacao
-    (pessoa_id, dt_pagamento, tipo_mov, direcao, descricao, valor, dt_vencimento, dt_emissao, paga_em, metodo, status, observacoes, registrado_por)
-VALUES
-    ((SELECT id FROM pessoa WHERE email = 'joao.silva@email.com' LIMIT 1), NULL, 'A_Receber', 'Entrada', 'Honorarios contratuais do processo de cobranca', 5000.00, '2026-07-05 18:00:00', '2026-06-22 10:00:00', NULL, 'Pix', 'Pendente', 'Parcelamento em 2 vezes', (SELECT id FROM pessoa WHERE email = 'carlos@advocacia.local' LIMIT 1)),
-    ((SELECT id FROM pessoa WHERE email = 'admin@advocacia.local' LIMIT 1), NULL, 'A_Pagar', 'Saida', 'Pagamento de software e hospedagem', 850.00, '2026-06-30 18:00:00', '2026-06-22 11:00:00', NULL, 'Boleto', 'Pendente', 'Despesa operacional do escritorio', (SELECT id FROM pessoa WHERE email = 'carlos@advocacia.local' LIMIT 1));
-
-COMMIT;
+INSERT IGNORE INTO cidade (nome, estado_id, criado_em, atualizado_em) VALUES
+                                                                          ('Herculândia', 20, NOW(), NOW()), ('Holambra', 20, NOW(), NOW()), ('Hortolândia', 20, NOW(), NOW()),
+                                                                          ('Iacanga', 20, NOW(), NOW()), ('Iacri', 20, NOW(), NOW()), ('Iaras', 20, NOW(), NOW()),
+                                                                          ('Ibaté', 20, NOW(), NOW()), ('Ibirá', 20, NOW(), NOW()), ('Ibirarema', 20, NOW(), NOW()),
+                                                                          ('Ibitinga', 20, NOW(), NOW()), ('Ibiúna', 20, NOW(), NOW()), ('Icém', 20, NOW(), NOW()),
+                                                                          ('Iepê', 20, NOW(), NOW()), ('Igaraçu do Tietê', 20, NOW(), NOW()), ('Igarapava', 20, NOW(), NOW()),
+                                                                          ('Igaratá', 20, NOW(), NOW()), ('Iguape', 20, NOW(), NOW()), ('Ilha Comprida', 20, NOW(), NOW()),
+                                                                          ('Ilha Solteira', 20, NOW(), NOW()), ('Ilhabela', 20, NOW(), NOW()), ('Indaiatuba', 20, NOW(), NOW()),
+                                                                          ('Indiana', 20, NOW(), NOW()), ('Indiaporã', 20, NOW(), NOW()), ('Inúbia Paulista', 20, NOW(), NOW()),
+                                                                          ('Ipaussu', 20, NOW(), NOW()), ('Iperó', 20, NOW(), NOW()), ('Ipeúna', 20, NOW(), NOW()),
+                                                                          ('Ipiguá', 20, NOW(), NOW()), ('Iporanga', 20, NOW(), NOW()), ('Iapuã', 20, NOW(), NOW()),
+                                                                          ('Iacri', 20, NOW(), NOW()), ('Iracemápolis', 20, NOW(), NOW()), ('Irapuã', 20, NOW(), NOW()),
+                                                                          ('Irapuru', 20, NOW(), NOW()), ('Itaberá', 20, NOW(), NOW()), ('Itaí', 20, NOW(), NOW()),
+                                                                          ('Itajobi', 20, NOW(), NOW()), ('Itaju', 20, NOW(), NOW()), ('Itanhaém', 20, NOW(), NOW()),
+                                                                          ('Itaóca', 20, NOW(), NOW()), ('Itapecerica da Serra', 20, NOW(), NOW()), ('Itapetininga', 20, NOW(), NOW()),
+                                                                          ('Itapeva', 20, NOW(), NOW()), ('Itapevi', 20, NOW(), NOW()), ('Itapira', 20, NOW(), NOW()),
+                                                                          ('Itapirapuã Paulista', 20, NOW(), NOW()), ('Itápolis', 20, NOW(), NOW()), ('Itaporanga', 20, NOW(), NOW()),
+                                                                          ('Itapuí', 20, NOW(), NOW()), ('Itapura', 20, NOW(), NOW()), ('Itaquaquecetuba', 20, NOW(), NOW()),
+                                                                          ('Itararé', 20, NOW(), NOW()), ('Itariri', 20, NOW(), NOW()), ('Itatiba', 20, NOW(), NOW()),
+                                                                          ('Itatinga', 20, NOW(), NOW()), ('Itirapina', 20, NOW(), NOW()), ('Itirapuã', 20, NOW(), NOW()),
+                                                                          ('Itobi', 20, NOW(), NOW()), ('Itu', 20, NOW(), NOW()), ('Itupeva', 20, NOW(), NOW()),
+                                                                          ('Ituverava', 20, NOW(), NOW()), ('Jaborandi', 20, NOW(), NOW()), ('Jaboticabal', 20, NOW(), NOW()),
+                                                                          ('Jacareí', 20, NOW(), NOW()), ('Jaci', 20, NOW(), NOW()), ('Jacupiranga', 20, NOW(), NOW()),
+                                                                          ('Jaguariúna', 20, NOW(), NOW()), ('Jales', 20, NOW(), NOW()), ('Jambeiro', 20, NOW(), NOW()),
+                                                                          ('Jandira', 20, NOW(), NOW()), ('Jardinópolis', 20, NOW(), NOW()), ('Jarinu', 20, NOW(), NOW()),
+                                                                          ('Jaú', 20, NOW(), NOW()), ('Jeriquara', 20, NOW(), NOW()), ('Joanópolis', 20, NOW(), NOW()),
+                                                                          ('João Ramalho', 20, NOW(), NOW()), ('José Bonifácio', 20, NOW(), NOW()), ('Júlio Mesquita', 20, NOW(), NOW()),
+                                                                          ('Jundiaí', 20, NOW(), NOW()), ('Junqueirópolis', 20, NOW(), NOW()), ('Juquiá', 20, NOW(), NOW()),
+                                                                          ('Juquitiba', 20, NOW(), NOW()), ('Lagoinha', 20, NOW(), NOW()), ('Laranjal Paulista', 20, NOW(), NOW()),
+                                                                          ('Lavínia', 20, NOW(), NOW()), ('Lavrinhas', 20, NOW(), NOW()), ('Leme', 20, NOW(), NOW()),
+                                                                          ('Lençóis Paulista', 20, NOW(), NOW()), ('Limeira', 20, NOW(), NOW()), ('Lindoia', 20, NOW(), NOW()),
+                                                                          ('Lins', 20, NOW(), NOW()), ('Lorena', 20, NOW(), NOW()), ('Lourdes', 20, NOW(), NOW()),
+                                                                          ('Louveira', 20, NOW(), NOW()), ('Lucélia', 20, NOW(), NOW()), ('Lucianópolis', 20, NOW(), NOW()),
+                                                                          ('Luiziânia', 20, NOW(), NOW()), ('Lupércio', 20, NOW(), NOW()), ('Lutécia', 20, NOW(), NOW()),
+                                                                          ('Macatuba', 20, NOW(), NOW()), ('Macaubal', 20, NOW(), NOW()), ('Macedônia', 20, NOW(), NOW()),
+                                                                          ('Magda', 20, NOW(), NOW()), ('Mairinque', 20, NOW(), NOW()), ('Mairiporã', 20, NOW(), NOW()),
+                                                                          ('Marabá Paulista', 20, NOW(), NOW()), ('Maracaí', 20, NOW(), NOW()), ('Marapoama', 20, NOW(), NOW()),
+                                                                          ('Mariápolis', 20, NOW(), NOW()), ('Marília', 20, NOW(), NOW()), ('Marinópolis', 20, NOW(), NOW()),
+                                                                          ('Martinópolis', 20, NOW(), NOW()), ('Matão', 20, NOW(), NOW()), ('Mauá', 20, NOW(), NOW()),
+                                                                          ('Mendonça', 20, NOW(), NOW()), ('Meridiano', 20, NOW(), NOW()), ('Mesópolis', 20, NOW(), NOW()),
+                                                                          ('Miguelópolis', 20, NOW(), NOW()), ('Mineiros do Tietê', 20, NOW(), NOW()), ('Mira Estrela', 20, NOW(), NOW()),
+                                                                          ('Miracatu', 20, NOW(), NOW()), ('Mirandópolis', 20, NOW(), NOW()), ('Mirante do Paranapanema', 20, NOW(), NOW()),
+                                                                          ('Mirassol', 20, NOW(), NOW()), ('Mirassolândia', 20, NOW(), NOW()), ('Mococa', 20, NOW(), NOW()),
+                                                                          ('Mogi das Cruzes', 20, NOW(), NOW()), ('Mogi Guaçu', 20, NOW(), NOW()), ('Mogi Mirim', 20, NOW(), NOW()),
+                                                                          ('Mombuca', 20, NOW(), NOW()), ('Monções', 20, NOW(), NOW()), ('Mongaguá', 20, NOW(), NOW()),
+                                                                          ('Monte Alegre do Sul', 20, NOW(), NOW()), ('Monte Alto', 20, NOW(), NOW()), ('Monte Aprazível', 20, NOW(), NOW()),
+                                                                          ('Monte Azul Paulista', 20, NOW(), NOW()), ('Monte Castelo', 20, NOW(), NOW()), ('Monte Mor', 20, NOW(), NOW()),
+                                                                          ('Monteiro Lobato', 20, NOW(), NOW()), ('Morro Agudo', 20, NOW(), NOW()), ('Morungaba', 20, NOW(), NOW()),
+                                                                          ('Motuca', 20, NOW(), NOW()), ('Murutinga do Sul', 20, NOW(), NOW()), ('Nantes', 20, NOW(), NOW()),
+                                                                          ('Narandiba', 20, NOW(), NOW()), ('Natividade da Serra', 20, NOW(), NOW()), ('Nazaré Paulista', 20, NOW(), NOW()),
+                                                                          ('Neves Paulista', 20, NOW(), NOW()), ('Nhandeara', 20, NOW(), NOW()), ('Nipoã', 20, NOW(), NOW()),
+                                                                          ('Nova Aliança', 20, NOW(), NOW()), ('Nova Campina', 20, NOW(), NOW()), ('Nova Canaã Paulista', 20, NOW(), NOW()),
+                                                                          ('Nova Castilho', 20, NOW(), NOW()), ('Nova Europa', 20, NOW(), NOW()), ('Nova Granada', 20, NOW(), NOW()),
+                                                                          ('Nova Guataporanga', 20, NOW(), NOW()), ('Nova Independência', 20, NOW(), NOW()), ('Nova Luzitânia', 20, NOW(), NOW()),
+                                                                          ('Nova Odessa', 20, NOW(), NOW()), ('Novais', 20, NOW(), NOW()), ('Novo Horizonte', 20, NOW(), NOW()),
+                                                                          ('Nuporanga', 20, NOW(), NOW()), ('Ocaçu', 20, NOW(), NOW()), ('Óleo', 20, NOW(), NOW()),
+                                                                          ('Olímpia', 20, NOW(), NOW()), ('Onda Verde', 20, NOW(), NOW()), ('Oriente', 20, NOW(), NOW()),
+                                                                          ('Orindiúva', 20, NOW(), NOW()), ('Orlândia', 20, NOW(), NOW()), ('Osasco', 20, NOW(), NOW()),
+                                                                          ('Oscar Bressane', 20, NOW(), NOW()), ('Osvaldo Cruz', 20, NOW(), NOW()), ('Ourinhos', 20, NOW(), NOW()),
+                                                                          ('Ouro Verde', 20, NOW(), NOW()), ('Ouroeste', 20, NOW(), NOW()), ('Pacaembu', 20, NOW(), NOW()),
+                                                                          ('Palestina', 20, NOW(), NOW()), ('Palmares Paulista', 20, NOW(), NOW()), ('Palmeira d''Oeste', 20, NOW(), NOW()),
+                                                                          ('Palmital', 20, NOW(), NOW()), ('Panorama', 20, NOW(), NOW()), ('Paraguaçu Paulista', 20, NOW(), NOW()),
+                                                                          ('Paraibuna', 20, NOW(), NOW()), ('Paraíso', 20, NOW(), NOW()), ('Paranapanema', 20, NOW(), NOW()),
+                                                                          ('Paranapuã', 20, NOW(), NOW()), ('Parapuã', 20, NOW(), NOW()), ('Pardinho', 20, NOW(), NOW()),
+                                                                          ('Pariquera-Açu', 20, NOW(), NOW()), ('Parisi', 20, NOW(), NOW()), ('Patrocínio Paulista', 20, NOW(), NOW()),
+                                                                          ('Paulicéia', 20, NOW(), NOW()), ('Paulínia', 20, NOW(), NOW()), ('Paulistânia', 20, NOW(), NOW()),
+                                                                          ('Paulo de Faria', 20, NOW(), NOW()), ('Pederneiras', 20, NOW(), NOW()), ('Pedra Bela', 20, NOW(), NOW()),
+                                                                          ('Pedranópolis', 20, NOW(), NOW()), ('Pedregulho', 20, NOW(), NOW()), ('Pedreira', 20, NOW(), NOW()),
+                                                                          ('Pedrinhas Paulista', 20, NOW(), NOW()), ('Pedro de Toledo', 20, NOW(), NOW()), ('Penápolis', 20, NOW(), NOW()),
+                                                                          ('Pereira Barreto', 20, NOW(), NOW()), ('Pereiras', 20, NOW(), NOW()), ('Peruíbe', 20, NOW(), NOW()),
+                                                                          ('Piacatu', 20, NOW(), NOW()), ('Piedade', 20, NOW(), NOW()), ('Pilar do Sul', 20, NOW(), NOW()),
+                                                                          ('Pindamonhangaba', 20, NOW(), NOW()), ('Pindorama', 20, NOW(), NOW()), ('Pinhalzinho', 20, NOW(), NOW()),
+                                                                          ('Piquerobi', 20, NOW(), NOW()), ('Piquete', 20, NOW(), NOW()), ('Piracaia', 20, NOW(), NOW()),
+                                                                          ('Piracicaba', 20, NOW(), NOW()), ('Piraju', 20, NOW(), NOW()), ('Pirajuí', 20, NOW(), NOW()),
+                                                                          ('Pirangi', 20, NOW(), NOW()), ('Pirapora do Bom Jesus', 20, NOW(), NOW()), ('Pirapozinho', 20, NOW(), NOW()),
+                                                                          ('Pirassununga', 20, NOW(), NOW()), ('Piratininga', 20, NOW(), NOW()), ('Pitangueiras', 20, NOW(), NOW()),
+                                                                          ('Planalto', 20, NOW(), NOW()), ('Platina', 20, NOW(), NOW()), ('Poá', 20, NOW(), NOW()),
+                                                                          ('Poloni', 20, NOW(), NOW()), ('Pompéia', 20, NOW(), NOW()), ('Pongaí', 20, NOW(), NOW()),
+                                                                          ('Pontal', 20, NOW(), NOW()), ('Pontalinda', 20, NOW(), NOW()), ('Pontes Gestal', 20, NOW(), NOW()),
+                                                                          ('Populina', 20, NOW(), NOW()), ('Porangaba', 20, NOW(), NOW()), ('Porto Feliz', 20, NOW(), NOW()),
+                                                                          ('Porto Ferreira', 20, NOW(), NOW()), ('Potim', 20, NOW(), NOW()), ('Potirendaba', 20, NOW(), NOW()),
+                                                                          ('Pracinha', 20, NOW(), NOW()), ('Pradópolis', 20, NOW(), NOW()), ('Praia Grande', 20, NOW(), NOW()),
+                                                                          ('Pratânia', 20, NOW(), NOW()), ('Presidente Alves', 20, NOW(), NOW()), ('Presidente Bernardes', 20, NOW(), NOW()),
+                                                                          ('Presidente Epitácio', 20, NOW(), NOW()), ('Presidente Prudente', 20, NOW(), NOW()), ('Presidente Venceslau', 20, NOW(), NOW()),
+                                                                          ('Promissão', 20, NOW(), NOW()), ('Quadra', 20, NOW(), NOW()), ('Quatá', 20, NOW(), NOW()),
+                                                                          ('Ribeirão do Sul', 20, NOW(), NOW()),
+                                                                          ('Ribeirão dos Índios', 20, NOW(), NOW()),
+                                                                          ('Ribeirão Grande', 20, NOW(), NOW()),
+                                                                          ('Ribeirão Pires', 20, NOW(), NOW()),
+                                                                          ('Ribeirão Preto', 20, NOW(), NOW()),
+                                                                          ('Rifaina', 20, NOW(), NOW()),
+                                                                          ('Rincão', 20, NOW(), NOW()),
+                                                                          ('Rinópolis', 20, NOW(), NOW()),
+                                                                          ('Rio Claro', 20, NOW(), NOW()),
+                                                                          ('Rio das Pedras', 20, NOW(), NOW()),
+                                                                          ('Rio Grande da Serra', 20, NOW(), NOW()),
+                                                                          ('Riolândia', 20, NOW(), NOW()),
+                                                                          ('Riversul', 20, NOW(), NOW()),
+                                                                          ('Rosana', 20, NOW(), NOW()),
+                                                                          ('Roseira', 20, NOW(), NOW()),
+                                                                          ('Rubiácea', 20, NOW(), NOW()),
+                                                                          ('Rubineia', 20, NOW(), NOW()),
+                                                                          ('Sabino', 20, NOW(), NOW()),
+                                                                          ('Sagres', 20, NOW(), NOW()),
+                                                                          ('Sales', 20, NOW(), NOW()),
+                                                                          ('Sales Oliveira', 20, NOW(), NOW()),
+                                                                          ('Salesópolis', 20, NOW(), NOW()),
+                                                                          ('Salmourão', 20, NOW(), NOW()),
+                                                                          ('Saltinho', 20, NOW(), NOW()),
+                                                                          ('Salto', 20, NOW(), NOW()),
+                                                                          ('Salto de Pirapora', 20, NOW(), NOW()),
+                                                                          ('Salto Grande', 20, NOW(), NOW()),
+                                                                          ('Sandovalina', 20, NOW(), NOW()),
+                                                                          ('Santa Adélia', 20, NOW(), NOW()),
+                                                                          ('Santa Albertina', 20, NOW(), NOW()),
+                                                                          ('Santa Bárbara d''Oeste', 20, NOW(), NOW()),
+                                                                          ('Santa Branca', 20, NOW(), NOW()),
+                                                                          ('Santa Clara d''Oeste', 20, NOW(), NOW()),
+                                                                          ('Santa Cruz da Conceição', 20, NOW(), NOW()),
+                                                                          ('Santa Cruz da Esperança', 20, NOW(), NOW()),
+                                                                          ('Santa Cruz das Palmeiras', 20, NOW(), NOW()),
+                                                                          ('Santa Cruz do Rio Pardo', 20, NOW(), NOW()),
+                                                                          ('Santa Ernestina', 20, NOW(), NOW()),
+                                                                          ('Santa Fé do Sul', 20, NOW(), NOW()),
+                                                                          ('Santa Gertrudes', 20, NOW(), NOW()),
+                                                                          ('Santa Isabel', 20, NOW(), NOW()),
+                                                                          ('Santa Lúcia', 20, NOW(), NOW()),
+                                                                          ('Santa Maria da Serra', 20, NOW(), NOW()),
+                                                                          ('Santa Mercedes', 20, NOW(), NOW()),
+                                                                          ('Santa Rita d''Oeste', 20, NOW(), NOW()),
+                                                                          ('Santa Rita do Passa Quatro', 20, NOW(), NOW()),
+                                                                          ('Santa Rosa de Viterbo', 20, NOW(), NOW()),
+                                                                          ('Santa Salete', 20, NOW(), NOW()),
+                                                                          ('Santana da Ponte Pensa', 20, NOW(), NOW()),
+                                                                          ('Santana de Parnaíba', 20, NOW(), NOW()),
+                                                                          ('Santo Anastácio', 20, NOW(), NOW()),
+                                                                          ('Santo André', 20, NOW(), NOW()),
+                                                                          ('Santo Antônio da Alegria', 20, NOW(), NOW()),
+                                                                          ('Santo Antônio de Posse', 20, NOW(), NOW()),
+                                                                          ('Santo Antônio do Aracanguá', 20, NOW(), NOW()),
+                                                                          ('Santo Antônio do Jardim', 20, NOW(), NOW()),
+                                                                          ('Santo Antônio do Pinhal', 20, NOW(), NOW()),
+                                                                          ('Santo Expedito', 20, NOW(), NOW()),
+                                                                          ('Santópolis do Aguapeí', 20, NOW(), NOW()),
+                                                                          ('Santos', 20, NOW(), NOW()),
+                                                                          ('São Bento do Sapucaí', 20, NOW(), NOW()),
+                                                                          ('São Bernardo do Campo', 20, NOW(), NOW()),
+                                                                          ('São Caetano do Sul', 20, NOW(), NOW()),
+                                                                          ('São Carlos', 20, NOW(), NOW()),
+                                                                          ('São Francisco', 20, NOW(), NOW()),
+                                                                          ('São João da Boa Vista', 20, NOW(), NOW()),
+                                                                          ('São João das Duas Pontes', 20, NOW(), NOW()),
+                                                                          ('São João de Iracema', 20, NOW(), NOW()),
+                                                                          ('São João do Pau-d''Alho', 20, NOW(), NOW()),
+                                                                          ('São Joaquim da Barra', 20, NOW(), NOW()),
+                                                                          ('São José da Bela Vista', 20, NOW(), NOW()),
+                                                                          ('São José do Barreiro', 20, NOW(), NOW()),
+                                                                          ('São José do Rio Pardo', 20, NOW(), NOW()),
+                                                                          ('São José do Rio Preto', 20, NOW(), NOW()),
+                                                                          ('São José dos Campos', 20, NOW(), NOW()),
+                                                                          ('São Lourenço da Serra', 20, NOW(), NOW()),
+                                                                          ('São Luis do Paraitinga', 20, NOW(), NOW()),
+                                                                          ('São Manuel', 20, NOW(), NOW()),
+                                                                          ('São Miguel Arcanjo', 20, NOW(), NOW()),
+                                                                          ('São Paulo', 20, NOW(), NOW()),
+                                                                          ('São Pedro', 20, NOW(), NOW()),
+                                                                          ('São Pedro do Turvo', 20, NOW(), NOW()),
+                                                                          ('São Roque', 20, NOW(), NOW()),
+                                                                          ('São Sebastião', 20, NOW(), NOW()),
+                                                                          ('São Sebastião da Grama', 20, NOW(), NOW()),
+                                                                          ('São Vicente', 20, NOW(), NOW()),
+                                                                          ('Sarapuí', 20, NOW(), NOW()),
+                                                                          ('Sarutaiá', 20, NOW(), NOW()),
+                                                                          ('Sebastianópolis do Sul', 20, NOW(), NOW()),
+                                                                          ('Serra Azul', 20, NOW(), NOW()),
+                                                                          ('Serra Negra', 20, NOW(), NOW()),
+                                                                          ('Serrana', 20, NOW(), NOW()),
+                                                                          ('Sertãozinho', 20, NOW(), NOW()),
+                                                                          ('Sete Barras', 20, NOW(), NOW()),
+                                                                          ('Severínia', 20, NOW(), NOW()),
+                                                                          ('Silveiras', 20, NOW(), NOW()),
+                                                                          ('Socorro', 20, NOW(), NOW()),
+                                                                          ('Sorocaba', 20, NOW(), NOW()),
+                                                                          ('Sud Mennucci', 20, NOW(), NOW()),
+                                                                          ('Sumaré', 20, NOW(), NOW()),
+                                                                          ('Suzanápolis', 20, NOW(), NOW()),
+                                                                          ('Suzano', 20, NOW(), NOW()),
+                                                                          ('Tabapuã', 20, NOW(), NOW()),
+                                                                          ('Tabatinga', 20, NOW(), NOW()),
+                                                                          ('Taboão da Serra', 20, NOW(), NOW()),
+                                                                          ('Taciba', 20, NOW(), NOW()),
+                                                                          ('Taguaí', 20, NOW(), NOW()),
+                                                                          ('Taiaçu', 20, NOW(), NOW()),
+                                                                          ('Taiúva', 20, NOW(), NOW()),
+                                                                          ('Tambaú', 20, NOW(), NOW()),
+                                                                          ('Tanabi', 20, NOW(), NOW()),
+                                                                          ('Tapiraí', 20, NOW(), NOW()),
+                                                                          ('Tapiratiba', 20, NOW(), NOW()),
+                                                                          ('Taquaral', 20, NOW(), NOW()),
+                                                                          ('Taquaritinga', 20, NOW(), NOW()),
+                                                                          ('Taquarituba', 20, NOW(), NOW()),
+                                                                          ('Taquarivaí', 20, NOW(), NOW()),
+                                                                          ('Tarabai', 20, NOW(), NOW()),
+                                                                          ('Tarumã', 20, NOW(), NOW()),
+                                                                          ('Tatuí', 20, NOW(), NOW()),
+                                                                          ('Taubaté', 20, NOW(), NOW()),
+                                                                          ('Teodoro Sampaio', 20, NOW(), NOW()),
+                                                                          ('Terra Roxa', 20, NOW(), NOW()),
+                                                                          ('Tietê', 20, NOW(), NOW()),
+                                                                          ('Timburi', 20, NOW(), NOW()),
+                                                                          ('Torre de Pedra', 20, NOW(), NOW()),
+                                                                          ('Torrinha', 20, NOW(), NOW()),
+                                                                          ('Trabiju', 20, NOW(), NOW()),
+                                                                          ('Tremembé', 20, NOW(), NOW()),
+                                                                          ('Três Fronteiras', 20, NOW(), NOW()),
+                                                                          ('Tuiuti', 20, NOW(), NOW()),
+                                                                          ('Tupã', 20, NOW(), NOW()),
+                                                                          ('Tupi Paulista', 20, NOW(), NOW()),
+                                                                          ('Turiúba', 20, NOW(), NOW()),
+                                                                          ('Turmalina', 20, NOW(), NOW()),
+                                                                          ('Ubarana', 20, NOW(), NOW()),
+                                                                          ('Ubatuba', 20, NOW(), NOW()),
+                                                                          ('Ubirajara', 20, NOW(), NOW()),
+                                                                          ('Uchoa', 20, NOW(), NOW()),
+                                                                          ('União Paulista', 20, NOW(), NOW()),
+                                                                          ('Uranânia', 20, NOW(), NOW()),
+                                                                          ('Uru', 20, NOW(), NOW()),
+                                                                          ('Urupês', 20, NOW(), NOW()),
+                                                                          ('Valentim Gentil', 20, NOW(), NOW()),
+                                                                          ('Valinhos', 20, NOW(), NOW()),
+                                                                          ('Valparaíso', 20, NOW(), NOW()),
+                                                                          ('Vargem', 20, NOW(), NOW()),
+                                                                          ('Vargem Grande do Sul', 20, NOW(), NOW()),
+                                                                          ('Vargem Grande Paulista', 20, NOW(), NOW()),
+                                                                          ('Várzea Paulista', 20, NOW(), NOW()),
+                                                                          ('Vera Cruz', 20, NOW(), NOW()),
+                                                                          ('Vinhedo', 20, NOW(), NOW()),
+                                                                          ('Viradouro', 20, NOW(), NOW()),
+                                                                          ('Vista Alegre do Alto', 20, NOW(), NOW()),
+                                                                          ('Vitória Brasil', 20, NOW(), NOW()),
+                                                                          ('Votorantim', 20, NOW(), NOW()),
+                                                                          ('Votuporanga', 20, NOW(), NOW()),
+                                                                          ('Zacarias', 20, NOW(), NOW());
