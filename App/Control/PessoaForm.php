@@ -54,14 +54,18 @@ class PessoaForm extends Page
         $telefone = new Entry('telefone');
         $email = new Entry('email');
         $tipo = new RadioGroup('tipo');
+        $tipo->id = 'pessoa_tipo';
         $cpf = new Entry('cpf');
         $cnpj = new Entry('cnpj');
+        $cnpj->id = 'pessoa_cnpj';
         $this->senhaField = new Password('senha');
         $this->confirmacaoField = new Password('confirmacao');
         $foto = new File('foto');
         $foto->accept = 'image/*';
         $oab = new Entry('oab');
+        $oab->id = 'pessoa_oab';
         $oabUf = new Entry('oab_uf');
+        $oabUf->id = 'pessoa_oab_uf';
         $cargo = new Entry('cargo');
         $salario = new Entry('salario');
         $ativo = new RadioGroup('ativo');
@@ -69,7 +73,8 @@ class PessoaForm extends Page
         $demitidoEm = new Date('demitido_em');
         $observacoes = new Text('observacoes');
         $grupo = new CheckGroup('ids_grupos');
-        $especialidade = new CheckGroup('id_especialidades');
+        $especialidade = new CheckGroup('ids_especialidades');
+        $especialidade->id = 'pessoa_especialidades';
 
         Transaction::open('advogado');
         $cidades = Cidade::all();
@@ -131,7 +136,6 @@ class PessoaForm extends Page
 
         $this->form->addField('Contratado em', $contratadoEm, '40%');
         $this->form->addField('Demitido em', $demitidoEm, '40%');
-        $this->form->addField('Ativo', $ativo, '40%');
 
         $isEditMode = !empty($_GET['id']);
 
@@ -142,6 +146,7 @@ class PessoaForm extends Page
         $this->form->addField('Foto', $foto, '80%');
         $this->form->addField('Grupos', $grupo, '80%');
         $this->form->addField('Especialidades', $especialidade, '80%');
+        $this->form->addField('Observacoes', $observacoes, '80%');
 
         $tipo->addItems(array(
             'F' => 'Fisica',
@@ -181,17 +186,19 @@ class PessoaForm extends Page
                 var senha = document.getElementById('pessoa_senha');
                 var confirmacao = document.getElementById('pessoa_confirmacao');
                 var botao = document.getElementById('btn_alterar_senha');
-                if (senha) {
-                    senha.parentNode.parentNode.style.display = '';
-                    senha.value = '';
+                
+                if (senha && senha.parentNode && senha.parentNode.parentNode) {
+                    senha.parentNode.parentNode.style.display = 'block';
+                    senha.focus();
                 }
-                if (confirmacao) {
-                    confirmacao.parentNode.parentNode.style.display = '';
-                    confirmacao.value = '';
+                if (confirmacao && confirmacao.parentNode && confirmacao.parentNode.parentNode) {
+                    confirmacao.parentNode.parentNode.style.display = 'block';
                 }
                 if (botao) {
                     botao.style.display = 'none';
                 }
+                
+                return false;
             ";
 
             $this->alterarSenhaPanel->add($botaoAlterarSenha);
@@ -212,6 +219,82 @@ class PessoaForm extends Page
             ");
             parent::add($script);
         }
+
+        // Script para visibilidade condicional dos campos
+        $scriptVisibilidade = new Element('script');
+        $scriptVisibilidade->add("
+            function toggleCamposAdvogado() {
+                var tipoRadios = document.getElementsByName('tipo');
+                var tipoSelecionado = '';
+                
+                for (var i = 0; i < tipoRadios.length; i++) {
+                    if (tipoRadios[i].checked) {
+                        tipoSelecionado = tipoRadios[i].value;
+                        break;
+                    }
+                }
+                
+                // Campos para advogado (OAB, OAB UF, Especialidades)
+                var oab = document.getElementById('pessoa_oab');
+                var oabUf = document.getElementById('pessoa_oab_uf');
+                var especialidades = document.getElementById('pessoa_especialidades');
+                
+                // Campo para pessoa jurídica (CNPJ)
+                var cnpj = document.getElementById('pessoa_cnpj');
+                
+                // Mostrar/ocultar CNPJ se tipo = J (Jurídica)
+                if (cnpj && cnpj.parentNode && cnpj.parentNode.parentNode) {
+                    cnpj.parentNode.parentNode.style.display = (tipoSelecionado === 'J') ? 'block' : 'none';
+                }
+                
+                // Mostrar/ocultar OAB e OAB UF se tipo = F (Física/Advogado)
+                if (oab && oab.parentNode && oab.parentNode.parentNode) {
+                    oab.parentNode.parentNode.style.display = (tipoSelecionado === 'F') ? 'block' : 'none';
+                }
+                if (oabUf && oabUf.parentNode && oabUf.parentNode.parentNode) {
+                    oabUf.parentNode.parentNode.style.display = (tipoSelecionado === 'F') ? 'block' : 'none';
+                }
+                
+                // Mostrar/ocultar Especialidades APENAS se tipo = F (Física/Advogado)
+                if (especialidades) {
+                    var container = especialidades;
+                    while (container && !container.classList.contains('form-group') && container !== document.body) {
+                        container = container.parentNode;
+                    }
+                    if (container) {
+                        container.style.display = (tipoSelecionado === 'F') ? 'block' : 'none';
+                    } else if (especialidades.parentNode && especialidades.parentNode.parentNode) {
+                        especialidades.parentNode.parentNode.style.display = (tipoSelecionado === 'F') ? 'block' : 'none';
+                    }
+                }
+            }
+            
+            document.addEventListener('DOMContentLoaded', function () {
+                // Ocultar especialidades por padrão
+                var especialidades = document.getElementById('pessoa_especialidades');
+                if (especialidades) {
+                    var container = especialidades;
+                    while (container && !container.classList.contains('form-group') && container !== document.body) {
+                        container = container.parentNode;
+                    }
+                    if (container) {
+                        container.style.display = 'none';
+                    } else if (especialidades.parentNode && especialidades.parentNode.parentNode) {
+                        especialidades.parentNode.parentNode.style.display = 'none';
+                    }
+                }
+                
+                // Aplicar visibilidade inicial baseado no tipo selecionado
+                toggleCamposAdvogado();
+                
+                // Adicionar listeners aos radiobuttons de tipo
+                var tipoRadios = document.getElementsByName('tipo');
+                for (var i = 0; i < tipoRadios.length; i++) {
+                    tipoRadios[i].addEventListener('change', toggleCamposAdvogado);
+                }
+            });
+        ");
+        parent::add($scriptVisibilidade);
 
         $box = new HBox();
         $box->style = 'display: flex; align-items: stretch; width:80%';
@@ -243,6 +326,26 @@ class PessoaForm extends Page
 
             unset($dados->confirmacao);
 
+            // Armazenar dados de relacionamento antes de remover
+            $ids_grupos = !empty($dados->ids_grupos) ? $dados->ids_grupos : array();
+            $ids_especialidades = !empty($dados->ids_especialidades) ? $dados->ids_especialidades : array();
+
+            // Remover campos virtuais que não existem na tabela pessoa
+            unset($dados->ids_grupos);
+            unset($dados->ids_especialidades);
+
+            // Garantir que ativo tem um valor válido
+            if (empty($dados->ativo) || ($dados->ativo !== '0' && $dados->ativo !== 1)) {
+                $dados->ativo = '1'; // Padrão: ativo
+            }
+
+            // Validar e normalizar cidade_id - deve ser um inteiro válido ou null
+            if (empty($dados->cidade_id) || !is_numeric($dados->cidade_id)) {
+                $dados->cidade_id = NULL;
+            } else {
+                $dados->cidade_id = (int) $dados->cidade_id;
+            }
+
             $pessoa = new Pessoa();
             $pessoa->fromArray((array) $dados);
 
@@ -272,15 +375,15 @@ class PessoaForm extends Page
             $pessoa->store();
 
             $pessoa->delGrupos();
-            if (!empty($dados->ids_grupos)) {
-                foreach ($dados->ids_grupos as $id_grupo) {
+            if (!empty($ids_grupos)) {
+                foreach ($ids_grupos as $id_grupo) {
                     $pessoa->addGrupo(new Grupo($id_grupo));
                 }
             }
 
             $pessoa->delEspecialidade();
-            if (!empty($dados->ids_especialidades)) {
-                foreach ($dados->ids_especialidades as $id_especialidade) {
+            if (!empty($ids_especialidades)) {
+                foreach ($ids_especialidades as $id_especialidade) {
                     $pessoa->addEspecialidade(new Especialidade($id_especialidade));
                 }
             }

@@ -13,7 +13,7 @@ class HomePage extends Page
 
         // Valores de fallback vindos da sessao para evitar tela incompleta.
         $nome = (string) (Session::getValue('nome_usuario') ?? '');
-        $grupo = (string) (Session::getValue('grupo_usuario') ?? 'UsuÃ¡rio');
+        $grupo = (string) (Session::getValue('grupo_usuario') ?? 'Usuário');
         $foto = 'App/Templates/assets/img/default-avatar.png';
 
         try {
@@ -42,12 +42,12 @@ class HomePage extends Page
             <div style="padding:24px 8px; max-width:1100px;">
                 <div style="display:flex; gap:28px; align-items:center; flex-wrap:wrap;">
                     <div>
-                        <img src="' . $foto . '" alt="Foto do usuÃ¡rio" style="width:180px; height:180px; object-fit:cover; border-radius:50%; border:4px solid #7e57c2; background:#fff;">
+                        <img src="' . $foto . '" alt="Foto do usuário" style="width:180px; height:180px; object-fit:cover; border-radius:50%; border:4px solid #7e57c2; background:#fff;">
                     </div>
                     <div>
-                        <img src="App/Templates/assets/img/new_logo.png" alt="Logo da empresa" style="max-width:260px; height:auto; margin-bottom:18px;">
-                        <h2 style="margin:0 0 8px 0;">Bem-vindo, Dr. ' . $nome . '</h2>
-                        <p style="margin:0 0 10px 0;">Seu acesso foi autenticado com sucesso. Esta Ã© sua Ã¡rea de trabalho no sistema.</p>
+                        <img src="App/Templates/assets/img/procopio_logo.png" alt="Logo da empresa" style="max-width:260px; height:auto; margin-bottom:18px;">
+                        <h2 style="margin:0 0 8px 0;">Bem-vindo(a), Sr(a). ' . $nome . '</h2>
+                        <p style="margin:0 0 10px 0;">Seu acesso foi autenticado com sucesso. Esta é sua Área de trabalho no sistema.</p>
                         <p style="margin:0;">Grupo atual: ' . $grupo . '</p>
                     </div>
                 </div>
